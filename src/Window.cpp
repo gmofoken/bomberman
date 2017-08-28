@@ -2,21 +2,10 @@
 #include "MainMenu.hpp"
 #include "Sound.hpp"
 
-MainMenu *mainMenu;
-
 //Error checking         :Cradebe
 static void error_callback(int error, const char* description)
 {
     fputs(description, stderr);
-}
-
-//Key Checking input        :Cradebe
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{          
-    if ((key == GLFW_KEY_DOWN || key == GLFW_KEY_UP || key == GLFW_KEY_ENTER ) && action == GLFW_PRESS)
-         mainMenu->toggleCommands(key);
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
 }
 
 Window::Window(){
@@ -58,7 +47,6 @@ void Window::initiateSystems(){
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     
     _window = glfwCreateWindow(800, 600, "Bomberman", NULL, NULL);
-    mainMenu = new MainMenu(_window, graphics);
     
     if (!_window)
     {
@@ -66,7 +54,6 @@ void Window::initiateSystems(){
     }
     
     glfwMakeContextCurrent(_window);
-    glfwSetKeyCallback(_window, key_callback);
     // Ensure we can capture the escape key being pressed below
     glfwSetInputMode(_window, GLFW_STICKY_KEYS, GL_TRUE);
 
@@ -85,7 +72,6 @@ void Window::initiateSystems(){
 void Window::setGraphics(Graphics g)
 {
     this->graphics = &g;
-    mainMenu->setGraphics(graphics);
 }
 
 //Terminates initialised system

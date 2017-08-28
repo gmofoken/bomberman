@@ -13,17 +13,16 @@
 #include "Graphics.hpp"
 #include <stdio.h>
 
-Graphics::Graphics(GLuint VBO, GLuint VAOs[])
+Graphics::Graphics()
 {
-    this->VertexArrayID = VBO;
-    
-	for (int i = 0; i < 96; i++)
-		this->VAOs[i] = VAOs[i];
+	drawMode = MAINMENU;
 }
 
-void Graphics::initGlArrays(GLuint VBOs[], GLuint VAOs[], GLuint EBOs[])
+Graphics::~Graphics() { }
+
+void Graphics::initGlArrays()
 {
-	GLfloat vertices[96][20];
+	GLfloat vertices[STATIC_WALLS][20];
     GLfloat xLeft = -0.8f;
     GLfloat xRight = -0.7f;
     GLfloat fUnit = 0.2;
@@ -95,24 +94,20 @@ void Graphics::initGlArrays(GLuint VBOs[], GLuint VAOs[], GLuint EBOs[])
 
 void Graphics::drawElements()
 {
-    glBindVertexArray(VertexArrayID);
-    // Draw the triangle !
-    glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0); // 3 indices starting at 0 -> 1 triangle
-
-    //trin logic
-    for (int i = 0; i < 96; i++)
-    {
-        glBindVertexArray(VAOs[i]);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // 3 indices starting at 0 -> 1 triangle
-    }
+   //trin logic
+   for (int i = 0; i < STATIC_WALLS; i++)
+   {
+       glBindVertexArray(VAOs[i]);
+       glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // 3 indices starting at 0 -> 1 triangle
+   }
 }
 
-void Graphics::setInt(int i)
+void Graphics::setDrawMode(GameMode mode)
 {
-    testIn = i;
+	drawMode = mode;
 }
 
-int Graphics::getInt()
+GameMode Graphics::getDrawMode()
 {
-    return testIn;
+	return drawMode;
 }

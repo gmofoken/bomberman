@@ -21,8 +21,8 @@ INCLUDE_FOLDER = include
 
 SRCDIR = src/
 SRCS = main.cpp Graphics.cpp Window.cpp MainMenu.cpp stb_image.cpp \
-	  Texture.cpp common/shader.cpp WindowKeyEvents.cpp \
-	  Sound.cpp
+	  Texture.cpp shader.cpp WindowKeyEvents.cpp Player.cpp \
+	  Sound.cpp Wall.cpp
 SRC	= $(addprefix $(SRCDIR), $(SRCS))
 INCLUDE = $(wildcard $(INCLUDE_FOLDER)/*.hpp)
 

@@ -7,6 +7,7 @@
 # include <iostream>
 
 #include "Window.hpp"
+#include "shader.hpp"
 
 struct Input
 {
@@ -14,6 +15,7 @@ struct Input
         Start,
         Continue,
         Settings,
+        HighScore,
         Exit
     };
 };
@@ -35,13 +37,18 @@ class MainMenu
         void toggleCommands(int input);
         void executeCommand(int command);
         void setGraphics(Graphics *g);
+        void gameHighScore();
+        void initMenuImage();
+        void LoadMainMenuImage();
+        void menuCleanup();
 
         int getInput();
     
     private:
         int _input;
         GLFWwindow* _window;
-		Graphics *graphics;
+        Graphics *graphics;
+        GLuint menuVAO, menuTexture, menuEBO, menuVBO, programID;
 };
 
 #endif

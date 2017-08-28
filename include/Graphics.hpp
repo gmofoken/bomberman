@@ -16,25 +16,31 @@
 #include "glew.h"
 #include "glfw3.h"
 
+#define STATIC_WALLS 96
+
+enum GameMode
+{
+	MAINMENU,
+	GAMEPLAY,
+	GAMEPAUSE
+};
+
 class Graphics
 {
 public:
-	Graphics(GLuint VBO, GLuint VAOs[]);
+	Graphics();
+	~Graphics();
 
-	void initGlArrays(GLuint VBOs[], GLuint VAOs[], GLuint EBOs[]);
-	
-	/* causing errors, and hence code doesn't compile: emsimang */
-	//void initPlayerVertices(G);
-	
+	void initGlArrays();
 	void drawElements();
+	void setDrawMode(GameMode mode);
 
-	void setInt(int i);
-	int getInt();
+	GameMode getDrawMode();
 
 private:
 	GLuint VertexArrayID;
-	GLuint VAOs[96];
-	int testIn;
+	GLuint programID, VAOs[STATIC_WALLS], VBOs[STATIC_WALLS], EBOs[STATIC_WALLS];
+	GameMode drawMode;
 };
 
 #endif
