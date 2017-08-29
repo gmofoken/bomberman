@@ -23,7 +23,7 @@ Window::~Window(){
 
 //Runs Game         :Cradebe
 void Window::runGame(){
-    _sound->playMusicForvever(MUSIC_BEAR);
+    // _sound->playMusicForvever(MUSIC_BEAR);
     initiateSystems();
 }
 

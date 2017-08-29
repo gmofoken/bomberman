@@ -90,30 +90,37 @@ int main(void)
 	mainMenu->initMenuImage();
 	wall.init();
 	player->init();
+	// sound->playMusicForvever(MUSIC_MENU1);
+	Mix_VolumeMusic(50);
+	
 
 	do {
 		// Clear the screen
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		keyEvents->keyEventsWrapper(window, sound, graphics);
 		switch (graphics->getDrawMode())
 		{
-		case MAINMENU:
-			mainMenu->LoadMainMenuImage();
-			keyEvents->keyEventsWrapper(window, sound);
-			break;
-		case GAMEPLAY:
-			//bind texture
-			glBindTexture(GL_TEXTURE_2D, wallTexture);
-			// Use our shader
-			glUseProgram(programID);
-			wall.draw();
-			graphics->drawElements();
-			//player transformations
-			player->transform();
-			//draw player
-			player->draw();
-		default:
-			break;
+			case MAINMENU:
+				if (!Mix_PlayingMusic())
+					sound->playMusicForvever(MUSIC_MENU1);
+				mainMenu->LoadMainMenuImage();
+				break;
+			case GAMEPLAY:
+				sound->playMusicForvever(MUSIC_BACK);
+				// keyEvents->keyEventsWrapper(window, sound);
+				//bind texture
+				glBindTexture(GL_TEXTURE_2D, wallTexture);
+				// Use our shader
+				glUseProgram(programID);
+				wall.draw();
+				graphics->drawElements();
+				//player transformations
+				player->transform();
+				//draw player
+				player->draw();
+			default:
+				break;
 		}
 
 		// Swap buffers

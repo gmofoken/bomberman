@@ -3,14 +3,16 @@
 void Sound::loadEffects(void)
 {
     this->effects = new Mix_Chunk*[NUM_EFFECTS];
-    (this->effects)[EFFECT_CHIME] = Mix_LoadWAV("sounds/chime.wav");
-    (this->effects)[EFFECT_WALK] = Mix_LoadWAV("sounds/walk_e.wav");
+    (this->effects)[EFFECT_WALK] = Mix_LoadWAV("sounds/walk.wav");
+    (this->effects)[EFFECT_SCROLL] = Mix_LoadWAV("sounds/scroll.wav");
 }
 
 void Sound::loadMusic(void)
 {
     this->music = new Mix_Music*[NUM_MUSIC];
-    (this->music)[MUSIC_BEAR] = Mix_LoadMUS("sounds/background.wav");
+    (this->music)[MUSIC_BACK] = Mix_LoadMUS("sounds/background.wav");
+    (this->music)[MUSIC_MENU1] = Mix_LoadMUS("sounds/menu.wav");
+    (this->music)[MUSIC_MENU2] = Mix_LoadMUS("sounds/menu2.wav");
 }
 
 Sound::Sound(void)
@@ -51,6 +53,11 @@ void Sound::playEffectForvever(int effect)
     Mix_PlayChannel(DEFAULT_CHANNEL, (this->effects)[effect], -1);
 }
 
+int Sound::musicIsPlaying()
+{
+    return (Mix_PlayingMusic());
+}
+
 void Sound::playMusicOnce(int music)
 {
     Mix_PlayMusic((this->music)[music], 1);
@@ -63,7 +70,15 @@ void Sound::playMusicLoop(int music, int loop)
 
 void Sound::playMusicForvever(int music)
 {
-    Mix_PlayMusic((this->music)[music], -1);
+    if (!musicIsPlaying())
+        Mix_FadeInMusic((this->music)[music], -1, 4000);
+        // Mix_PlayMusic((this->music)[music], -1);
+}
+
+void Sound::stopMusic(int fade_time)
+{
+    Mix_FadeOutMusic(500);
+    // Mix_HaltMusic();
 }
 
 void Sound::stopEffect(int channel)
