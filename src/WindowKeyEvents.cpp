@@ -25,8 +25,8 @@ void WindowKeyEvents::soundKeyEvents(GLFWwindow *win, Sound *s)
     if (glfwGetKey(win, GLFW_KEY_UP) == GLFW_PRESS   || glfwGetKey(win, GLFW_KEY_DOWN) == GLFW_PRESS ||
         glfwGetKey(win, GLFW_KEY_LEFT) == GLFW_PRESS || glfwGetKey(win, GLFW_KEY_RIGHT) == GLFW_PRESS )
     {
-        if (!Mix_Playing(WALK_CHANNEL))
-            s->playEffectOnce(EFFECT_WALK, WALK_CHANNEL);
+    if (!Mix_Playing(WALK_CHANNEL))
+        s->playEffectOnce(EFFECT_WALK, WALK_CHANNEL);
     }
     if (glfwGetKey(win, GLFW_KEY_UP) == GLFW_RELEASE   && glfwGetKey(win, GLFW_KEY_DOWN) == GLFW_RELEASE &&
         glfwGetKey(win, GLFW_KEY_LEFT) == GLFW_RELEASE && glfwGetKey(win, GLFW_KEY_RIGHT) == GLFW_RELEASE )
