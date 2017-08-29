@@ -8,16 +8,21 @@
 
 /* Channels */
 #define WALK_CHANNEL 1
+#define SCROLL_CHANNEL 2
 #define DEFAULT_CHANNEL -1
 
 /* Effects */
 #define NUM_EFFECTS 2
-#define EFFECT_CHIME 0
-#define EFFECT_WALK 1
+
+#define EFFECT_WALK 0
+#define EFFECT_SCROLL 1
 
 /* Music */
-#define NUM_MUSIC 1
-#define MUSIC_BEAR 0
+#define NUM_MUSIC 3
+
+#define MUSIC_BACK 0
+#define MUSIC_MENU1 1
+#define MUSIC_MENU2 2
 
 class Sound
 {
@@ -36,11 +41,13 @@ class Sound
         void playEffectLoop(int effect, int loop);
         void playEffectForvever(int effect);
 
+        int musicIsPlaying();
         void playMusicOnce(int music);
         void playMusicLoop(int music, int loop);
         void playMusicForvever(int music);
 
-        void stopEffect(int channel);        
+        void stopMusic(int fade_time);
+        void stopEffect(int channel);
 
         Mix_Chunk **getEffects(void);
         Mix_Music **getMusic(void);
