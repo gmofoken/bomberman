@@ -5,6 +5,7 @@ void Sound::loadEffects(void)
     this->effects = new Mix_Chunk*[NUM_EFFECTS];
     (this->effects)[EFFECT_WALK] = Mix_LoadWAV("sounds/walk.wav");
     (this->effects)[EFFECT_SCROLL] = Mix_LoadWAV("sounds/scroll.wav");
+    (this->effects)[EFFECT_ENTER] = Mix_LoadWAV("sounds/enter.wav");
 }
 
 void Sound::loadMusic(void)

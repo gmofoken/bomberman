@@ -21,6 +21,7 @@ void WindowKeyEvents::soundKeyEvents(GLFWwindow *win, Sound *s, Graphics *g)
             {
                 current_screen = PLAY_SCREEN;
                 s->stopMusic(2000);
+                s->playEffectOnce(EFFECT_ENTER, ENTER_CHANNEL);
             }
             if (glfwGetKey(win, GLFW_KEY_UP) == GLFW_PRESS   || glfwGetKey(win, GLFW_KEY_DOWN) == GLFW_PRESS ||
                 glfwGetKey(win, GLFW_KEY_LEFT) == GLFW_PRESS || glfwGetKey(win, GLFW_KEY_RIGHT) == GLFW_PRESS )
@@ -38,8 +39,6 @@ void WindowKeyEvents::soundKeyEvents(GLFWwindow *win, Sound *s, Graphics *g)
                 if (!Mix_Playing(SCROLL_CHANNEL))
                     s->playEffectOnce(EFFECT_SCROLL, SCROLL_CHANNEL);
             }
-            // if (glfwGetKey(win, GLFW_KEY_UP) == GLFW_RELEASE   && glfwGetKey(win, GLFW_KEY_DOWN) == GLFW_RELEASE)
-            //     s->stopEffect(SCROLL_CHANNEL);
             break;
         case GAMEPAUSE:;;
             break;

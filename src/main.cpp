@@ -90,9 +90,7 @@ int main(void)
 	mainMenu->initMenuImage();
 	wall.init();
 	player->init();
-	// sound->playMusicForvever(MUSIC_MENU1);
-	Mix_VolumeMusic(50);
-	
+	Mix_VolumeMusic(10);	
 
 	do {
 		// Clear the screen
@@ -102,13 +100,11 @@ int main(void)
 		switch (graphics->getDrawMode())
 		{
 			case MAINMENU:
-				if (!Mix_PlayingMusic())
-					sound->playMusicForvever(MUSIC_MENU1);
+				sound->playMusicForvever(MUSIC_MENU1);
 				mainMenu->LoadMainMenuImage();
 				break;
 			case GAMEPLAY:
 				sound->playMusicForvever(MUSIC_BACK);
-				// keyEvents->keyEventsWrapper(window, sound);
 				//bind texture
 				glBindTexture(GL_TEXTURE_2D, wallTexture);
 				// Use our shader
