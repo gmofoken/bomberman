@@ -23,7 +23,6 @@ Window::~Window(){
 
 //Runs Game         :Cradebe
 void Window::runGame(){
-    // _sound->playMusicForvever(MUSIC_BEAR);
     initiateSystems();
 }
 
@@ -46,7 +45,7 @@ void Window::initiateSystems(){
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     
-    _window = glfwCreateWindow(800, 600, "Bomberman", NULL, NULL);
+    _window = glfwCreateWindow(_height, _width, "Bomberman", NULL, NULL);
     
     if (!_window)
     {
