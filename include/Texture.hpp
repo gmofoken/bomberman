@@ -1,3 +1,5 @@
+#ifndef TEXTURE_HPP
+#define TEXTURE_HPP
 
 #include <string>
 #include "glew.h"
@@ -17,3 +19,5 @@ class Texture
         ~Texture(void);
         void Bind(unsigned int unit);
 };
+
+#endif
