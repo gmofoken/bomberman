@@ -16,7 +16,7 @@
 #include "glew.h"
 #include "glfw3.h"
 
-#define STATIC_WALLS 96
+#define STATIC_WALLS 64
 
 enum GameMode
 {
@@ -38,7 +38,7 @@ public:
 	GameMode getDrawMode();
 
 private:
-	GLuint VertexArrayID;
+	GLuint VertexArrayID, wallText;
 	GLuint programID, VAOs[STATIC_WALLS], VBOs[STATIC_WALLS], EBOs[STATIC_WALLS];
 	GameMode drawMode;
 };

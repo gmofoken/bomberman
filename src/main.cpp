@@ -14,11 +14,77 @@
 #include "Window.hpp"
 #include "MainMenu.hpp"
 #include "Player.hpp"
+#include "Floor.hpp"
 
 GLFWwindow* window;
 MainMenu *mainMenu;
 Graphics *graphics;
 Player *player;
+
+//================================================================================================
+
+// camera
+glm::vec3 cameraPos   = glm::vec3(-1.0f, 2.0f,  3.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  1.0f);
+
+// timing
+float deltaTime = 0.0f;	// time between current frame and last frame
+float lastFrame = 0.0f;
+
+void timeLogic()
+{
+    // per-frame time logic
+    // --------------------
+    float currentFrame = glfwGetTime();
+    deltaTime = currentFrame - lastFrame;
+    lastFrame = currentFrame;
+}
+
+void cameraFunction(GLuint shadersID)
+{
+    glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+    glUniformMatrix4fv(glGetUniformLocation(shadersID, "view"), 1, GL_FALSE, &view[0][0]);
+    //return view;
+}
+
+void perspectiveView(GLuint shadersID)
+{
+    
+    //create transformations
+    glm::mat4 model;
+    model = glm::translate(model, glm::vec3(-1.3f,  2.0f, -1.5f));
+    float angle = 20.0f * 0;
+    model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    
+    //glm::mat4 view;
+    glm::mat4 projection;
+    projection = glm::perspective(glm::radians(30.0f), (float)WIDTH / (float) HEIGHT, 0.1f, 100.0f);
+    glUniformMatrix4fv(glGetUniformLocation(shadersID, "projection"), 1, GL_FALSE, &projection[0][0]);
+    
+    unsigned int modelLoc = glGetUniformLocation(shadersID, "model");
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+}
+
+void processInput(GLFWwindow *window)
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+    
+    float cameraSpeed = 2.5 * deltaTime;
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        cameraPos += cameraSpeed * cameraFront;
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        cameraPos -= cameraSpeed * cameraFront;
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+}
+
+
+//=================================================================================================
+
 
 //move player callback        :Trinity
 static void player_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -64,6 +130,7 @@ int main(void)
 	glfwSetKeyCallback(window, key_callback);
 
 	// Initialize GLEW
+    //reuben to revisit to create a function
 	glewExperimental = true; // Needed for core profile
 
 	if (glewInit() != GLEW_OK) {
@@ -74,26 +141,35 @@ int main(void)
 	}
 
 	// Create and compile our GLSL program from the shaders
-	GLuint programID = LoadShaders("SimpleVertexShader.vertexshader", "TextureFragmentShader.hlsl");
-
-	GLuint wallTexture;
-
-	Texture texture("next.JPEG", &wallTexture);
+	//GLuint programID = LoadShaders("SimpleVertexShader.vertexshader", "TextureFragmentShader.hlsl");
+    
+    //=========================================================================================
+    GLuint text1;
+    Texture texture1 ("mud.jpg", &text1);
+    //build and compile our shader program
+    GLuint shadersID = LoadShaders("shaderVertexCoordinate.vs", "shaderFragCoordinate.fs");
+    glUseProgram(shadersID);
+    glUniform1i(glGetUniformLocation(shadersID, "text1"), 0);
+    perspectiveView(shadersID);
+    //====================================================================================
 
 	graphics = new Graphics();
 	player = new Player();
 	Wall wall;
+    Floor floor;
 
 	graphics->initGlArrays();
 	//graphics->initPlayerVertices(&pVBO, &pVAO, &pEBO);
 	mainMenu = new MainMenu(window, graphics);
 	mainMenu->initMenuImage();
 	wall.init();
+    floor.init();
 	player->init();
 	Mix_VolumeMusic(10);	
 
 	do {
 		// Clear the screen
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		keyEvents->keyEventsWrapper(window, sound, graphics);
@@ -105,16 +181,21 @@ int main(void)
 				break;
 			case GAMEPLAY:
 				sound->playMusicForvever(MUSIC_BACK);
-				//bind texture
-				glBindTexture(GL_TEXTURE_2D, wallTexture);
 				// Use our shader
-				glUseProgram(programID);
+				//glUseProgram(programID);
+                //------------------------------
+                processInput(window);
+                glUseProgram(shadersID);
+                timeLogic();
+                cameraFunction(shadersID);
+                floor.draw();
+                //---------------------------------
 				wall.draw();
 				graphics->drawElements();
 				//player transformations
-				player->transform();
+				//player->transform();
 				//draw player
-				player->draw();
+				//player->draw();
 			default:
 				break;
 		}
@@ -131,7 +212,8 @@ int main(void)
 	delete graphics;
 	delete player;
 	mainMenu->menuCleanup();
-	glDeleteProgram(programID);
+	//glDeleteProgram(programID);
+    glDeleteProgram(shadersID);
 
 	// Close OpenGL window and terminate GLFW
 	glfwTerminate();

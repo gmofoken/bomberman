@@ -1,7 +1,7 @@
 #ifndef _WALL_HPP
 #define _WALL_HPP
 
-#include "glew.h"
+//#include <GL/glew.h>
 #include "Player.hpp"
 
 class Wall
@@ -19,6 +19,7 @@ private:
 	int yPos;
 	bool isDestructable;
 	GLuint VertexArrayID, vertexbuffer, wallTexture;
+   	GLuint	elementBuffer;
 };
 
 #endif
