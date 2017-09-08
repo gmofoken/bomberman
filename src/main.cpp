@@ -15,11 +15,13 @@
 #include "MainMenu.hpp"
 #include "Player.hpp"
 #include "Floor.hpp"
+#include "Portal.hpp"
 
 GLFWwindow* window;
 MainMenu *mainMenu;
 Graphics *graphics;
 Player *player;
+Portal *portal;
 
 //================================================================================================
 
@@ -155,6 +157,7 @@ int main(void)
 
 	graphics = new Graphics();
 	player = new Player();
+	portal = new Portal();
 	Wall wall;
     Floor floor;
 
@@ -164,6 +167,7 @@ int main(void)
 	mainMenu->initMenuImage();
 	wall.init();
     floor.init();
+	portal->init();
 	player->init();
 	Mix_VolumeMusic(10);	
 
@@ -192,10 +196,15 @@ int main(void)
                 //---------------------------------
 				wall.draw();
 				graphics->drawElements();
+				
 				//player transformations
 				//player->transform();
 				//draw player
 				//player->draw();
+
+				//Portal trans and draw
+			//	portal->transform();
+			//	portal->draw();
 			default:
 				break;
 		}
@@ -211,6 +220,8 @@ int main(void)
 	// Cleanup VBO
 	delete graphics;
 	delete player;
+	delete portal;
+	
 	mainMenu->menuCleanup();
 	//glDeleteProgram(programID);
     glDeleteProgram(shadersID);
