@@ -14,11 +14,13 @@
 #include "Window.hpp"
 #include "MainMenu.hpp"
 #include "Player.hpp"
+#include "Portal.hpp"
 
 GLFWwindow* window;
 MainMenu *mainMenu;
 Graphics *graphics;
 Player *player;
+Portal *portal;
 
 //move player callback        :Trinity
 static void player_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -82,6 +84,7 @@ int main(void)
 
 	graphics = new Graphics();
 	player = new Player();
+	portal = new Portal();
 	Wall wall;
 
 	graphics->initGlArrays();
@@ -89,6 +92,7 @@ int main(void)
 	mainMenu = new MainMenu(window, graphics);
 	mainMenu->initMenuImage();
 	wall.init();
+	portal->init();
 	player->init();
 	Mix_VolumeMusic(10);	
 
@@ -111,10 +115,15 @@ int main(void)
 				glUseProgram(programID);
 				wall.draw();
 				graphics->drawElements();
+				
 				//player transformations
 				player->transform();
-				//draw player
 				player->draw();
+
+				//Portal trans and draw
+				portal->transform();
+				portal->draw();
+
 			default:
 				break;
 		}
@@ -130,6 +139,8 @@ int main(void)
 	// Cleanup VBO
 	delete graphics;
 	delete player;
+	delete portal;
+	
 	mainMenu->menuCleanup();
 	glDeleteProgram(programID);
 
