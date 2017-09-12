@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Graphics.cpp                                       :+:      :+:    :+:   */
+/*   StaticWall.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tditshwe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/08/16 14:43:54 by tditshwe          #+#    #+#             */
-/*   Updated: 2017/09/11 14:44:30 by rmoswela         ###   ########.fr       */
+/*   Created: 2017/08/14 15:28:53 by tditshwe          #+#    #+#             */
+/*   Updated: 2017/09/11 16:27:00 by rmoswela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Graphics.hpp"
-#include "Texture.hpp"
-#include <stdio.h>
+#include "StaticWall.hpp"
 
-Graphics::Graphics()
+StaticWall::StaticWall()
 {
-	drawMode = MAINMENU;
+    //glDeleteBuffers(1, &VBO);
 }
 
-Graphics::~Graphics() { }
-
-void Graphics::initGlArrays()
+StaticWall::~StaticWall()
 {
-	Texture texture("crate.png", &staticWallTexture);
+    /*glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);*/
+}
 
-	GLfloat vertices[STATIC_WALLS][40];
+void StaticWall::init()
+{
+    Texture texture("brick2.jpg", &wallTexture);
+    
+    GLfloat vertices[STATIC_WALLS][40];
     GLfloat xLeft = -0.8f;
     GLfloat xRight = -0.7f;
     GLfloat fUnit = 0.2;
@@ -152,24 +155,15 @@ void Graphics::initGlArrays()
             k++;
         }
     }
+    
 }
 
-void Graphics::drawElements()
+void StaticWall::draw()
 {
-   for (int i = 0; i < STATIC_WALLS; i++)
-   {
-	   //glBindTexture(GL_TEXTURE_2D, staticWallTexture);
-       glBindVertexArray(VAOs[i]);
-       glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-   }
-}
-
-void Graphics::setDrawMode(GameMode mode)
-{
-	drawMode = mode;
-}
-
-GameMode Graphics::getDrawMode()
-{
-	return drawMode;
+    for (int i = 0; i < STATIC_WALLS; i++)
+    {
+        glBindTexture(GL_TEXTURE_2D, wallTexture);
+        glBindVertexArray(VAOs[i]);
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+    }
 }

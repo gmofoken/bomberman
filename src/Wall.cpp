@@ -6,7 +6,7 @@
 /*   By: tditshwe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/14 15:28:53 by tditshwe          #+#    #+#             */
-/*   Updated: 2017/09/06 17:15:32 by rmoswela         ###   ########.fr       */
+/*   Updated: 2017/09/11 14:48:42 by rmoswela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ Wall::~Wall()
 void Wall::init()
 {
 
-	Texture texture("brick1.jpg", &wallTexture);
+	Texture texture("brick2.jpg", &wallTexture);
     
     static const GLfloat vertexData[] = {
         //wall up
@@ -143,8 +143,6 @@ void Wall::init()
     // texture coord attribute
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-    
-    //return VertexArrayID;
     
 }
 

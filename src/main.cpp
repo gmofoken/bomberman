@@ -16,6 +16,8 @@
 #include "Player.hpp"
 #include "Floor.hpp"
 #include "Portal.hpp"
+#include "StaticWall.hpp"
+#include "Destructible.hpp"
 
 GLFWwindow* window;
 MainMenu *mainMenu;
@@ -146,12 +148,9 @@ int main(void)
 	//GLuint programID = LoadShaders("SimpleVertexShader.vertexshader", "TextureFragmentShader.hlsl");
     
     //=========================================================================================
-    GLuint text1;
-    Texture texture1 ("mud.jpg", &text1);
     //build and compile our shader program
     GLuint shadersID = LoadShaders("shaderVertexCoordinate.vs", "shaderFragCoordinate.fs");
     glUseProgram(shadersID);
-    glUniform1i(glGetUniformLocation(shadersID, "text1"), 0);
     perspectiveView(shadersID);
     //====================================================================================
 
@@ -159,6 +158,8 @@ int main(void)
 	player = new Player();
 	portal = new Portal();
 	Wall wall;
+	StaticWall staticWall;
+	Destructible destructible;
     Floor floor;
 
 	graphics->initGlArrays();
@@ -166,6 +167,8 @@ int main(void)
 	mainMenu = new MainMenu(window, graphics);
 	mainMenu->initMenuImage();
 	wall.init();
+	staticWall.init();
+	destructible.init();
     floor.init();
 	portal->init();
 	player->init();
@@ -195,7 +198,9 @@ int main(void)
                 floor.draw();
                 //---------------------------------
 				wall.draw();
-				graphics->drawElements();
+				staticWall.draw();
+				destructible.draw();
+				//graphics->drawElements();
 				
 				//player transformations
 				//player->transform();

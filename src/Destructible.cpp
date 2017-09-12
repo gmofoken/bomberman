@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Graphics.cpp                                       :+:      :+:    :+:   */
+/*   Destructible.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tditshwe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/08/16 14:43:54 by tditshwe          #+#    #+#             */
-/*   Updated: 2017/09/11 14:44:30 by rmoswela         ###   ########.fr       */
+/*   Created: 2017/08/14 15:28:53 by tditshwe          #+#    #+#             */
+/*   Updated: 2017/09/11 16:35:20 by rmoswela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Graphics.hpp"
-#include "Texture.hpp"
-#include <stdio.h>
+#include "Destructible.hpp"
 
-Graphics::Graphics()
+Destructible::Destructible()
 {
-	drawMode = MAINMENU;
 }
 
-Graphics::~Graphics() { }
-
-void Graphics::initGlArrays()
+Destructible::~Destructible()
 {
-	Texture texture("crate.png", &staticWallTexture);
+}
 
-	GLfloat vertices[STATIC_WALLS][40];
-    GLfloat xLeft = -0.8f;
-    GLfloat xRight = -0.7f;
+void Destructible::init()
+{
+    Texture texture("crate.png", &destructibleTexture);
+    
+    GLfloat vertices[STATIC_WALLS][40];
+    GLfloat xLeft = -0.7f;
+    GLfloat xRight = -0.6f;
     GLfloat fUnit = 0.2;
     
     unsigned int indices[] = {
@@ -152,24 +151,15 @@ void Graphics::initGlArrays()
             k++;
         }
     }
+    
 }
 
-void Graphics::drawElements()
+void Destructible::draw()
 {
-   for (int i = 0; i < STATIC_WALLS; i++)
-   {
-	   //glBindTexture(GL_TEXTURE_2D, staticWallTexture);
-       glBindVertexArray(VAOs[i]);
-       glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-   }
-}
-
-void Graphics::setDrawMode(GameMode mode)
-{
-	drawMode = mode;
-}
-
-GameMode Graphics::getDrawMode()
-{
-	return drawMode;
+    for (int i = 0; i < STATIC_WALLS; i++)
+    {
+        glBindTexture(GL_TEXTURE_2D, destructibleTexture);
+        glBindVertexArray(VAOs[i]);
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+    }
 }
