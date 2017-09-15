@@ -59,7 +59,8 @@ void perspectiveView(GLuint shadersID)
     glm::mat4 model;
     model = glm::translate(model, glm::vec3(-1.3f,  2.0f, -1.5f));
     float angle = 20.0f * 0;
-    model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(-75.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
     
     //glm::mat4 view;
     glm::mat4 projection;
@@ -115,6 +116,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 		mainMenu->toggleCommands(key);
 		if (mainMenu->getInput() == 0 && key == GLFW_KEY_ENTER)
 			glfwSetKeyCallback(window, player_callback);
+		glEnable(GL_DEPTH_TEST);
 	}
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
@@ -188,6 +190,7 @@ int main(void)
 				break;
 			case GAMEPLAY:
 				sound->playMusicForvever(MUSIC_BACK);
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 				// Use our shader
 				//glUseProgram(programID);
                 //------------------------------
