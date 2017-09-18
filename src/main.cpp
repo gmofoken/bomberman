@@ -117,6 +117,7 @@ int main(void)
 				sound->playMusicForvever(MUSIC_MENU1);
 				mainMenu->LoadMainMenuImage();
 				break;
+				
 			case GAMEPLAY:
 				sound->playMusicForvever(MUSIC_BACK);
 				// Use our shader
