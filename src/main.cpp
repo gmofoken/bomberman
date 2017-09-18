@@ -1,13 +1,4 @@
 // Include standard headers
-#include <stdio.h>
-#include <stdlib.h>
-
-// Include GLEW
-//#include <GL/glew.h>
-
-// Include GLFW
-//#include <GLFW/glfw3.h>
-
 #include "Wall.hpp"
 #include "shader.hpp"
 #include "Graphics.hpp"
@@ -18,6 +9,7 @@
 #include "Portal.hpp"
 #include "StaticWall.hpp"
 #include "Destructible.hpp"
+#include "camera.hpp"
 
 GLFWwindow* window;
 MainMenu *mainMenu;
@@ -25,70 +17,10 @@ Graphics *graphics;
 Player *player;
 Portal *portal;
 
-//================================================================================================
-
 // camera
 glm::vec3 cameraPos   = glm::vec3(-1.0f, 2.0f,  3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  1.0f);
-
-// timing
-float deltaTime = 0.0f;	// time between current frame and last frame
-float lastFrame = 0.0f;
-
-void timeLogic()
-{
-    // per-frame time logic
-    // --------------------
-    float currentFrame = glfwGetTime();
-    deltaTime = currentFrame - lastFrame;
-    lastFrame = currentFrame;
-}
-
-void cameraFunction(GLuint shadersID)
-{
-    glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-    glUniformMatrix4fv(glGetUniformLocation(shadersID, "view"), 1, GL_FALSE, &view[0][0]);
-    //return view;
-}
-
-void perspectiveView(GLuint shadersID)
-{
-    
-    //create transformations
-    glm::mat4 model;
-    model = glm::translate(model, glm::vec3(-1.3f,  2.0f, -1.5f));
-    float angle = 20.0f * 0;
-    model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    
-    //glm::mat4 view;
-    glm::mat4 projection;
-    projection = glm::perspective(glm::radians(30.0f), (float)WIDTH / (float) HEIGHT, 0.1f, 100.0f);
-    glUniformMatrix4fv(glGetUniformLocation(shadersID, "projection"), 1, GL_FALSE, &projection[0][0]);
-    
-    unsigned int modelLoc = glGetUniformLocation(shadersID, "model");
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-}
-
-void processInput(GLFWwindow *window)
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-    
-    float cameraSpeed = 2.5 * deltaTime;
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraFront;
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraFront;
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-}
-
-
-//=================================================================================================
-
 
 //move player callback        :Trinity
 static void player_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -110,6 +42,7 @@ static void player_callback(GLFWwindow* window, int key, int scancode, int actio
 //Key Checking input        :Cradebe
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
+    glEnable(GL_DEPTH_TEST);
 	if ((key == GLFW_KEY_DOWN || key == GLFW_KEY_UP || key == GLFW_KEY_ENTER) && action == GLFW_PRESS)
 	{
 		mainMenu->toggleCommands(key);
@@ -144,16 +77,6 @@ int main(void)
 		return -1;
 	}
 
-	// Create and compile our GLSL program from the shaders
-	//GLuint programID = LoadShaders("SimpleVertexShader.vertexshader", "TextureFragmentShader.hlsl");
-    
-    //=========================================================================================
-    //build and compile our shader program
-    GLuint shadersID = LoadShaders("shaderVertexCoordinate.vs", "shaderFragCoordinate.fs");
-    glUseProgram(shadersID);
-    perspectiveView(shadersID);
-    //====================================================================================
-
 	graphics = new Graphics();
 	player = new Player();
 	portal = new Portal();
@@ -161,6 +84,7 @@ int main(void)
 	StaticWall staticWall;
 	Destructible destructible;
     Floor floor;
+    Camera camera(cameraPos, cameraFront, cameraUp);
 
 	graphics->initGlArrays();
 	//graphics->initPlayerVertices(&pVBO, &pVAO, &pEBO);
@@ -172,12 +96,19 @@ int main(void)
     floor.init();
 	portal->init();
 	player->init();
-	Mix_VolumeMusic(10);	
-
-	do {
+	Mix_VolumeMusic(10);
+    
+    //=========================================================================================
+    //build and compile our shader program
+    GLuint shadersID = LoadShaders("shaderVertexCoordinate.vs", "shaderFragCoordinate.fs");
+    glUseProgram(shadersID);
+    camera.perspectiveView(shadersID);
+    //====================================================================================
+    
+    do {
 		// Clear the screen
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		keyEvents->keyEventsWrapper(window, sound, graphics);
 		switch (graphics->getDrawMode())
@@ -191,10 +122,10 @@ int main(void)
 				// Use our shader
 				//glUseProgram(programID);
                 //------------------------------
-                processInput(window);
+                camera.processKeyInput(window);
                 glUseProgram(shadersID);
-                timeLogic();
-                cameraFunction(shadersID);
+                camera.cameraTimeLogic();
+                camera.cameraFunction(shadersID);
                 floor.draw();
                 //---------------------------------
 				wall.draw();
