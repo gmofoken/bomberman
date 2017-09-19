@@ -12,11 +12,12 @@ public:
     ~Destructible();
     
     void init();
+    void test();
     void draw();
     
 private:
     GLuint VertexArrayID, destructibleTexture;
-    GLuint programID, VAOs[STATIC_WALLS], VBOs[STATIC_WALLS], EBOs[STATIC_WALLS];
+    GLuint programID, VAOs[STATIC_WALLS], VBOs[STATIC_WALLS], EBOs[STATIC_WALLS], vao, vbo;
 
 };
 
