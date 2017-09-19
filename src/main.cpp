@@ -42,12 +42,15 @@ static void player_callback(GLFWwindow* window, int key, int scancode, int actio
 //Key Checking input        :Cradebe
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    glEnable(GL_DEPTH_TEST);
+    
 	if ((key == GLFW_KEY_DOWN || key == GLFW_KEY_UP || key == GLFW_KEY_ENTER) && action == GLFW_PRESS)
 	{
 		mainMenu->toggleCommands(key);
 		if (mainMenu->getInput() == 0 && key == GLFW_KEY_ENTER)
+        {
 			glfwSetKeyCallback(window, player_callback);
+            glEnable(GL_DEPTH_TEST);
+        }
 	}
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);

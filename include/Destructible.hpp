@@ -3,6 +3,7 @@
 
 #define STATIC_WALLS 64
 
+#include "Bomberman.hpp"
 #include "Player.hpp"
 
 class Destructible
