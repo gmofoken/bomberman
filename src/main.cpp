@@ -11,19 +11,19 @@
 #include "Destructible.hpp"
 #include "camera.hpp"
 
-GLFWwindow* window;
+GLFWwindow *window;
 MainMenu *mainMenu;
 Graphics *graphics;
 Player *player;
 Portal *portal;
 
 // camera
-glm::vec3 cameraPos   = glm::vec3(-1.0f, 2.0f,  3.0f);
+glm::vec3 cameraPos = glm::vec3(-1.0f, 2.0f, 3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  1.0f);
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 1.0f);
 
 //move player callback        :Trinity
-static void player_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void player_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
 	if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		player->moveDown();
@@ -40,9 +40,9 @@ static void player_callback(GLFWwindow* window, int key, int scancode, int actio
 }
 
 //Key Checking input        :Cradebe
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
-    glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 	if ((key == GLFW_KEY_DOWN || key == GLFW_KEY_UP || key == GLFW_KEY_ENTER) && action == GLFW_PRESS)
 	{
 		mainMenu->toggleCommands(key);
@@ -56,6 +56,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 int main(void)
 {
 	Sound *sound;
+	int soundVal;
 	Window myWindow;
 	WindowKeyEvents *keyEvents;
 
@@ -67,10 +68,11 @@ int main(void)
 	glfwSetKeyCallback(window, key_callback);
 
 	// Initialize GLEW
-    //reuben to revisit to create a function
+	//reuben to revisit to create a function
 	glewExperimental = true; // Needed for core profile
 
-	if (glewInit() != GLEW_OK) {
+	if (glewInit() != GLEW_OK)
+	{
 		fprintf(stderr, "Failed to initialize GLEW\n");
 		getchar();
 		glfwTerminate();
@@ -83,8 +85,8 @@ int main(void)
 	Wall wall;
 	StaticWall staticWall;
 	Destructible destructible;
-    Floor floor;
-    Camera camera(cameraPos, cameraFront, cameraUp);
+	Floor floor;
+	Camera camera(cameraPos, cameraFront, cameraUp);
 
 	graphics->initGlArrays();
 	//graphics->initPlayerVertices(&pVBO, &pVAO, &pEBO);
@@ -93,57 +95,67 @@ int main(void)
 	wall.init();
 	staticWall.init();
 	destructible.init();
-    floor.init();
+	floor.init();
 	portal->init();
 	player->init();
-	Mix_VolumeMusic(10);
-    
-    //=========================================================================================
-    //build and compile our shader program
-    GLuint shadersID = LoadShaders("shaderVertexCoordinate.vs", "shaderFragCoordinate.fs");
-    glUseProgram(shadersID);
-    camera.perspectiveView(shadersID);
-    //====================================================================================
-    
-    do {
-		// Clear the screen
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	//=========================================================================================
+	//build and compile our shader program
+	GLuint shadersID = LoadShaders("shaderVertexCoordinate.vs", "shaderFragCoordinate.fs");
+	glUseProgram(shadersID);
+	camera.perspectiveView(shadersID);
+	//====================================================================================
+
+	//set the initial sound value
+	soundVal = mainMenu->getSoundVal();
+	Mix_VolumeMusic(soundVal);
+
+	do
+	{
+		// Clear the screen
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//only reset the sound setting if the value is different
+		if (soundVal != mainMenu->getSoundVal())
+		{
+			std::cout << "vol " << mainMenu->getSoundVal() << std::endl;
+			soundVal = mainMenu->getSoundVal();
+			Mix_VolumeMusic(soundVal);			
+		}
 		keyEvents->keyEventsWrapper(window, sound, graphics);
 		switch (graphics->getDrawMode())
 		{
-			case MAINMENU:
-				sound->playMusicForvever(MUSIC_MENU1);
-				mainMenu->LoadMainMenuImage();
-				break;
-				
-			case GAMEPLAY:
-				sound->playMusicForvever(MUSIC_BACK);
-				// Use our shader
-				//glUseProgram(programID);
-                //------------------------------
-                camera.processKeyInput(window);
-                glUseProgram(shadersID);
-                camera.cameraTimeLogic();
-                camera.cameraFunction(shadersID);
-                floor.draw();
-                //---------------------------------
-				wall.draw();
-				staticWall.draw();
-				destructible.draw();
-				//graphics->drawElements();
-				
-				//player transformations
-				//player->transform();
-				//draw player
-				//player->draw();
+		case MAINMENU:
+			sound->playMusicForvever(MUSIC_MENU1);
+			mainMenu->LoadMainMenuImage();
+			break;
 
-				//Portal trans and draw
-			//	portal->transform();
-			//	portal->draw();
-			default:
-				break;
+		case GAMEPLAY:
+			sound->playMusicForvever(MUSIC_BACK);
+			// Use our shader
+			//glUseProgram(programID);
+			//------------------------------
+			camera.processKeyInput(window);
+			glUseProgram(shadersID);
+			camera.cameraTimeLogic();
+			camera.cameraFunction(shadersID);
+			floor.draw();
+			//---------------------------------
+			wall.draw();
+			staticWall.draw();
+			destructible.draw();
+		//graphics->drawElements();
+
+		//player transformations
+		//player->transform();
+		//draw player
+		//player->draw();
+
+		//Portal trans and draw
+		//	portal->transform();
+		//	portal->draw();
+		default:
+			break;
 		}
 
 		// Swap buffers
@@ -152,16 +164,16 @@ int main(void)
 
 	} // Check if the ESC key was pressed or the window was closed
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
-		glfwWindowShouldClose(window) == 0);
+		   glfwWindowShouldClose(window) == 0);
 
 	// Cleanup VBO
 	delete graphics;
 	delete player;
 	delete portal;
-	
+
 	mainMenu->menuCleanup();
 	//glDeleteProgram(programID);
-    glDeleteProgram(shadersID);
+	glDeleteProgram(shadersID);
 
 	// Close OpenGL window and terminate GLFW
 	glfwTerminate();
