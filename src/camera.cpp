@@ -68,7 +68,6 @@ void    Camera::cameraFunction(GLuint shadersID)
 {
     _view = glm::lookAt(_pos, _pos + _front, _up);
     glUniformMatrix4fv(glGetUniformLocation(shadersID, "view"), 1, GL_FALSE, &_view[0][0]);
-    
     _model = cameraRotate(_model);
     _modelLoc = glGetUniformLocation(shadersID, "model");
     glUniformMatrix4fv(_modelLoc, 1, GL_FALSE, glm::value_ptr(_model));
@@ -87,7 +86,7 @@ glm::mat4 Camera::cameraRotate(glm::mat4 model)
     return _model;
 }
 
-void Camera::processKeyInput()//(GLFWwindow *window)
+void Camera::processKeyInput()
 {
     if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(_window, true);

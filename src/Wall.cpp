@@ -119,7 +119,7 @@ void Wall::init()
         1.0f, -0.9f, 0.05f,         0.0f, 1.0f,   //14
         1.0f,  0.9f, 0.05f,         20.0f, 1.0f,  //13
         
-        
+
         /*wall left direction*/
         //bottom
         -1.0f, 0.9f, -0.05f,		20.0f, 1.0f, //15

@@ -28,6 +28,7 @@ void Destructible::init()
     GLfloat xLeft = -0.7f;
     GLfloat xRight = -0.6f;
     GLfloat fUnit = 0.2;
+
     GLfloat vertexData[] ={
         //1
         //down
@@ -72,6 +73,7 @@ void Destructible::init()
         
         
         //2
+
         //bottom
         -0.7f, 0.7f, -0.05f,      0.0f, 0.0f, //0
         -0.6f, 0.7f, -0.05f,      1.0f, 0.0f, //1
@@ -113,6 +115,7 @@ void Destructible::init()
         -0.6f, 0.8f, -0.05f,      1.0f, 0.0f, //3
         
         //back
+
         
         //3
         
@@ -491,4 +494,5 @@ void Destructible::draw()
     glBindVertexArray(vao);
     //glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
     glDrawArrays(GL_TRIANGLES, 0, 72);
+
 }
