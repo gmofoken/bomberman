@@ -15,7 +15,6 @@ GLFWwindow* window;
 MainMenu *mainMenu;
 Graphics *graphics;
 Player *player;
-Portal *portal;
 
 // camera
 glm::vec3 cameraPos   = glm::vec3(-1.0f, 2.0f,  3.0f);
@@ -82,9 +81,9 @@ int main(void)
 
 	graphics = new Graphics();
 	player = new Player();
-	portal = new Portal();
 	Wall wall;
 	StaticWall staticWall;
+	Portal portal;
 	Destructible destructible;
     Floor floor;
     Camera camera(cameraPos, cameraFront, cameraUp, window);
@@ -95,9 +94,9 @@ int main(void)
 	mainMenu->initMenuImage();
 	wall.init();
 	staticWall.init();
+	portal.init();
 	destructible.init();
     floor.init();
-	portal->init();
 	player->init();
 	Mix_VolumeMusic(10);
     
@@ -133,17 +132,9 @@ int main(void)
                 //---------------------------------
 				wall.draw();
 				staticWall.draw();
+				portal.draw();
 				destructible.draw();
-				//graphics->drawElements();
-				
-				//player transformations
-				//player->transform();
-				//draw player
-				//player->draw();
 
-				//Portal trans and draw
-			//	portal->transform();
-			//	portal->draw();
 			default:
 				break;
 		}
@@ -159,7 +150,6 @@ int main(void)
 	// Cleanup VBO
 	delete graphics;
 	delete player;
-	delete portal;
 	
 	mainMenu->menuCleanup();
 	//glDeleteProgram(programID);
