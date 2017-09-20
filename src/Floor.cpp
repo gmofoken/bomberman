@@ -32,10 +32,10 @@ void Floor::init()
     //set up vertex data (and buffer(s)) and configure vertex attributes
     float vertices[] = {
         // positions          // texture coords
-        1.0f,  1.0f, 0.0f,   20.0f, 20.0f,
-        1.0f, -1.0f, 0.0f,   20.0f, 0.0f,
+        0.9f,  0.9f, 0.0f,   20.0f, 20.0f,
+        0.9f, -1.0f, 0.0f,   20.0f, 0.0f,
         -1.0f, -1.0f, 0.0f,   0.0f, 0.0f,
-        -1.0f,  1.0f, 0.0f,   0.0f, 20.0f
+        -1.0f,  0.9f, 0.0f,   0.0f, 20.0f
     };
     
     
