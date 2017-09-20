@@ -6,7 +6,7 @@
 /*   By: tditshwe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 14:44:19 by tditshwe          #+#    #+#             */
-/*   Updated: 2017/08/22 10:44:35 by emsimang         ###   ########.fr       */
+/*   Updated: 2017/09/11 14:39:35 by rmoswela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ public:
 	GameMode getDrawMode();
 
 private:
-	GLuint VertexArrayID, wallText;
+	GLuint VertexArrayID, staticWallTexture;
 	GLuint programID, VAOs[STATIC_WALLS], VBOs[STATIC_WALLS], EBOs[STATIC_WALLS];
 	GameMode drawMode;
 };

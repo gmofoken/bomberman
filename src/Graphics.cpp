@@ -6,7 +6,7 @@
 /*   By: tditshwe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 14:43:54 by tditshwe          #+#    #+#             */
-/*   Updated: 2017/08/16 14:43:57 by tditshwe         ###   ########.fr       */
+/*   Updated: 2017/09/11 14:44:30 by rmoswela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ Graphics::~Graphics() { }
 
 void Graphics::initGlArrays()
 {
+	Texture texture("crate.png", &staticWallTexture);
+
 	GLfloat vertices[STATIC_WALLS][40];
     GLfloat xLeft = -0.8f;
     GLfloat xRight = -0.7f;
@@ -156,8 +158,9 @@ void Graphics::drawElements()
 {
    for (int i = 0; i < STATIC_WALLS; i++)
    {
+	   //glBindTexture(GL_TEXTURE_2D, staticWallTexture);
        glBindVertexArray(VAOs[i]);
-       glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0); // 3 indices starting at 0 -> 1 triangle
+       glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
    }
 }
 
