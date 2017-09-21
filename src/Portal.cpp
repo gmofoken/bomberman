@@ -6,7 +6,7 @@ Portal::~Portal(){}
 
 void Portal::init()
 {
-	Texture texture("doorz.jpeg", &destructibleTexture);
+	Texture texture("blackhole.jpg", &destructibleTexture);
     
     GLfloat vertices[STATIC_WALLS][180];
     GLfloat xLeft = -0.7f;
@@ -23,46 +23,6 @@ void Portal::init()
         -0.8f, 0.7f, -0.05f,      1.0f, 1.0f, //2
         -0.8f, 0.7f, -0.05f,      1.0f, 1.0f, //2
         -0.9f, 0.7f, -0.05f,      0.0f, 1.0f, //3
-        -0.9f, 0.6f, -0.05f,      0.0f, 0.0f, //0
-        
-        //top
-        -0.9f, 0.6f, 0.05f,      0.0f, 0.0f, //4
-        -0.8f, 0.6f, 0.05f,      1.0f, 0.0f, //5
-        -0.8f, 0.7f, 0.05f,      1.0f, 1.0f, //6
-        -0.8f, 0.7f, 0.05f,      1.0f, 1.0f, //6
-        -0.9f, 0.7f, 0.05f,      0.0f, 1.0f, //7
-        -0.9f, 0.6f, 0.05f,      0.0f, 0.0f, //4
-        
-        //front
-        -0.9f, 0.6f, -0.05f,      0.0f, 0.0f, //0
-        -0.8f, 0.6f, -0.05f,      1.0f, 0.0f, //1
-        -0.8f, 0.6f, 0.05f,      1.0f, 1.0f,  //5
-        -0.8f, 0.6f, 0.05f,      1.0f, 1.0f, //5
-        -0.9f, 0.6f, 0.05f,      0.0f, 1.0f, //4
-        -0.9f, 0.6f, -0.05f,      0.0f, 0.0f, //0
-        
-        //back
-        -0.9f, 0.7f, -0.05f,      0.0f, 0.0f, //3
-        -0.8f, 0.7f, -0.05f,      1.0f, 0.0f, //2
-        -0.8f, 0.7f, 0.05f,      1.0f, 1.0f, //6
-        -0.8f, 0.7f, 0.05f,      1.0f, 1.0f, //6
-        -0.9f, 0.7f, 0.05f,      0.0f, 1.0f, //7
-        -0.9f, 0.7f, -0.05f,      0.0f, 0.0f, //3
-        
-        //side right
-        -0.8f, 0.6f, -0.05f,      0.0f, 0.0f, //1
-        -0.8f, 0.7f, -0.05f,      1.0f, 0.0f, //2
-        -0.8f, 0.7f, 0.05f,      1.0f, 1.0f, //6
-        -0.8f, 0.7f, 0.05f,      1.0f, 1.0f, //6
-        -0.8f, 0.6f, 0.05f,      0.0f, 1.0f, //5
-        -0.8f, 0.6f, -0.05f,      0.0f, 0.0f, //1
-        
-        //side left
-        -0.9f, 0.6f, -0.05f,      0.0f, 0.0f, //0
-        -0.9f, 0.7f, -0.05f,      1.0f, 0.0f, //3
-        -0.9f, 0.7f, 0.05f,      1.0f, 1.0f, //7
-        -0.9f, 0.7f, 0.05f,      1.0f, 1.0f, //7
-        -0.9f, 0.6f, 0.05f,      0.0f, 1.0f, //4
         -0.9f, 0.6f, -0.05f,      0.0f, 0.0f, //0
     };
 
@@ -82,7 +42,7 @@ void Portal::init()
 
 void Portal::test()
 {
-	Texture texture("doorz.jpeg", &destructibleTexture);
+	Texture texture("blackhole.jpg", &destructibleTexture);
     
     GLfloat vertices[STATIC_WALLS][180];
     GLfloat xLeft = -0.7f;
