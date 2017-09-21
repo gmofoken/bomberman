@@ -52,16 +52,16 @@ void Window::initiateSystems()
 
     //std::cout << "window full" << std::endl;
 
-    _window = glfwCreateWindow(1920, 1080, "Bomberman", glfwGetPrimaryMonitor(), NULL);
+    _fullWindow = glfwCreateWindow(1920, 1080, "Bomberman", glfwGetPrimaryMonitor(), NULL);
 
-    if (!_window)
+    if (!_fullWindow)
     {
         terminateSystems();
     }
 
-    glfwMakeContextCurrent(_window);
+    glfwMakeContextCurrent(_fullWindow);
     // Ensure we can capture the escape key being pressed below
-    glfwSetInputMode(_window, GLFW_STICKY_KEYS, GL_TRUE);
+    glfwSetInputMode(_fullWindow, GLFW_STICKY_KEYS, GL_TRUE);
 
     // Dark green background
     glClearColor(0.0f, 0.3f, 0.0f, 0.0f);
@@ -139,10 +139,15 @@ void Window::changeWindowSize()
     if (_fullWindow)
     {
         initiateSystems2();
+        _fullWindow = nullptr;
+        //glfwDestroyWindow(_fullWindow);
     }
     else if (_window)
     {
         initiateSystems();
+        
+        _window = nullptr; 
+        //glfwDestroyWindow(_window);
     }
 }
 
