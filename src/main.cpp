@@ -10,11 +10,14 @@
 #include "StaticWall.hpp"
 #include "Destructible.hpp"
 #include "camera.hpp"
+#include "Maze.hpp"
 
 GLFWwindow* window;
 MainMenu *mainMenu;
 Graphics *graphics;
 Player *player;
+Portal *portal;
+Maze *maze;
 
 // camera
 glm::vec3 cameraPos   = glm::vec3(-1.0f, 2.0f,  3.0f);
@@ -24,13 +27,13 @@ glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  1.0f);
 //move player callback        :Trinity
 static void player_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT))
+	if (key == GLFW_KEY_K && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		player->moveDown();
-	if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT))
+	if (key == GLFW_KEY_I && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		player->moveUp();
-	if (key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT))
+	if (key == GLFW_KEY_J && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		player->moveLeft();
-	if (key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT))
+	if (key == GLFW_KEY_L && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		player->moveRight();
 	if (key == GLFW_KEY_SPACE)
 	{
@@ -69,14 +72,22 @@ int main(void)
 	glfwSetKeyCallback(window, key_callback);
 
 	// Initialize GLEW
-    if (myWindow.initializeGlew() == false)
-        return -1;
+    //reuben to revisit to create a function
+	glewExperimental = true; // Needed for core profile
+
+	if (glewInit() != GLEW_OK) {
+		fprintf(stderr, "Failed to initialize GLEW\n");
+		getchar();
+		glfwTerminate();
+		return -1;
+	}
 
 	graphics = new Graphics();
 	player = new Player();
+	maze = new Maze(player);
+	portal = new Portal();
 	Wall wall;
 	StaticWall staticWall;
-	Portal portal;
 	Destructible destructible;
     Floor floor;
     Camera camera(cameraPos, cameraFront, cameraUp, window);
@@ -87,10 +98,10 @@ int main(void)
 	mainMenu->initMenuImage();
 	wall.init();
 	staticWall.init();
-	portal.init();
-	destructible.init1();
-    //destructible.init2();
+	maze->setWalls(staticWall.getMaze().getWalls());
+	destructible.init();
     floor.init();
+	portal->init();
 	player->init();
 	Mix_VolumeMusic(10);
     
@@ -126,9 +137,19 @@ int main(void)
                 //---------------------------------
 				wall.draw();
 				staticWall.draw();
-				portal.draw();
 				destructible.draw();
+				//graphics->drawElements();
+				
+				glUseProgram(player->getProgramId());
+				camera.cameraFunction(player->getProgramId());
+				//player transformations
+				player->transform();
+				//draw player
+				player->draw();
 
+				//Portal trans and draw
+			//	portal->transform();
+			//	portal->draw();
 			default:
 				break;
 		}
@@ -144,6 +165,7 @@ int main(void)
 	// Cleanup VBO
 	delete graphics;
 	delete player;
+	delete portal;
 	
 	mainMenu->menuCleanup();
 	//glDeleteProgram(programID);

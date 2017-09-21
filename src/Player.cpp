@@ -2,8 +2,8 @@
 
 Player::Player()
 {
-	xPos = 0.0f;
-	yPos = 0.0f;
+	xPos = -1.0f;
+	yPos = 2.0f;
 }
 
 Player::~Player()
@@ -19,10 +19,10 @@ void Player::init()
 	programID = LoadShaders("TransformationFragmentShader.hlsl", "TextureFragmentShader.hlsl");
 
 	GLfloat vertices[] = {
-		-0.89f, 0.81f, 0.0f,  0.0f, 0.0f, //Bottom left
-		-0.81, 0.81f, 0.0f,  1.0f, 0.0f, //Bottom right
-		-0.89f, 0.89f, 0.0f,  0.0f, 1.0f, //Top left
-		-0.81, 0.89f, 0.0f,  1.0f, 1.0f, //Top right
+		-0.89f, 0.81f, 0.05f,  0.0f, 0.0f, //Bottom left
+		-0.81, 0.81f, 0.05f,  1.0f, 0.0f, //Bottom right
+		-0.89f, 0.89f, 0.05f,  0.0f, 1.0f, //Top left
+		-0.81, 0.89f, 0.05f,  1.0f, 1.0f, //Top right
 	};
 
 	unsigned int indices[] = {
@@ -52,44 +52,77 @@ void Player::init()
 	glEnableVertexAttribArray(1);
 
 	Texture pTexture("cool.png", &pTextureId);
+
+	/*glm::mat4 projection;
+	projection = glm::perspective(glm::radians(30.0f), (float)1027 / (float)768, 0.1f, 100.0f);
+	glUniformMatrix4fv(glGetUniformLocation(programID, "projection"), 1, GL_FALSE, &projection[0][0]);*/
 }
 
 void Player::moveUp()
 {
-	yPos += 0.025f;
+	//std::cout << yPos << "f" << std::endl;
+	if (yPos < 2.0f)
+		yPos += 0.025f;
 }
 
 void Player::moveDown()
-{
-	yPos -= 0.025f;
+{	
+	if (yPos > 0.375f)
+		yPos -= 0.025f;
 }
 
 void Player::moveLeft()
 {
-	xPos -= 0.025f;
+	//std::cout << xPos << "f" << std::endl;
+	if (xPos >= -1.275f)
+		xPos -= 0.025f;
 }
 void Player::moveRight()
 {
-	xPos += 0.025f;
+	if (xPos < 0.375f)
+		xPos += 0.025f;
 }
 
 void Player::transform()
 {
 	// create transformations
 	glm::mat4 transform;
-	transform = glm::translate(transform, glm::vec3(xPos, yPos, 0.0f));
-	//transform = glm::rotate(transform, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	transform = glm::translate(transform, glm::vec3(xPos, yPos, -1.0f));
+	float angle = 20.0f * 0;
+	transform = glm::rotate(transform, glm::radians(-70.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+	//glm::mat4 view;
+	glm::mat4 projection;
+	projection = glm::perspective(glm::radians(10.0f), (float)1024 / (float)768, 0.1f, 100.0f);
+	glUniformMatrix4fv(glGetUniformLocation(programID, "projection"), 1, GL_FALSE, &projection[0][0]);
 
 	// get matrix's uniform location and set matrix
 	glUseProgram(programID);
-	unsigned int transformLoc = glGetUniformLocation(programID, "transform");
+	unsigned int transformLoc = glGetUniformLocation(programID, "model");
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 }
 
 void Player::draw()
 {
+	glUseProgram(programID);
+	//camera.cameraFunction(programID);
 	//draw player
 	glBindTexture(GL_TEXTURE_2D, pTextureId);
 	glBindVertexArray(pVAO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
+GLfloat Player::getYPos()
+{
+	return yPos;
+}
+
+GLfloat Player::getXPos()
+{
+	return xPos;
+}
+
+GLuint Player::getProgramId()
+{
+	return programID;
 }

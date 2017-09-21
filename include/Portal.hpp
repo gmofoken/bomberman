@@ -1,18 +1,26 @@
 #ifndef PORTAL_HPP
 #define PORTAL_HPP
 
-#include "Bomberman.hpp"
+#include "Texture.hpp"
+#include "shader.hpp"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 class Portal{
 public:
     Portal();
     ~Portal();
-    
     void init();
-    void draw();
+    void transform();
+	void draw();
+
 
 private:
-    GLuint vao, vbo, portalTexture;
+    GLfloat xPos, yPos;
+	GLuint programID, pVAO, pVBO, pEBO, pTextureId;
+
+protected:
 
 };
 #endif

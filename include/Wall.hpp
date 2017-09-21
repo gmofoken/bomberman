@@ -14,6 +14,9 @@ public:
 	void init();
 	void draw();
 
+	GLfloat getXPos();
+	GLfloat getYPos();
+
 private:
 	int xPos;
 	int yPos;

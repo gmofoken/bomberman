@@ -282,3 +282,13 @@ void Wall::draw()
 	//glDrawElements(GL_TRIANGLES, 72, GL_UNSIGNED_INT, 0); // 3 indices starting at 0 -> 1 triangle
     glDrawArrays(GL_TRIANGLES, 0, 114);
 }
+
+GLfloat Wall::getXPos()
+{
+    return xPos;
+}
+
+GLfloat Wall::getYPos()
+{
+    return yPos;
+}
