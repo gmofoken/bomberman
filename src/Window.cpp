@@ -12,6 +12,7 @@ Window::Window()
 {
     _width = WIDTH;
     _window = nullptr;
+    _fullWindow = nullptr;
     _height = HEIGHT;
     _sound = new Sound();
     _keyEvents = new WindowKeyEvents();
@@ -137,17 +138,16 @@ void Window::changeWindowSize()
     //int width, height;
     //glfwGetWindowSize(_window, &width, &height);
     if (_fullWindow)
-    {
+    {      
         initiateSystems2();
+        glfwDestroyWindow(_fullWindow);
         _fullWindow = nullptr;
-        //glfwDestroyWindow(_fullWindow);
     }
     else if (_window)
     {
-        initiateSystems();
-        
+        initiateSystems();        
+        glfwDestroyWindow(_window);
         _window = nullptr; 
-        //glfwDestroyWindow(_window);
     }
 }
 
@@ -158,7 +158,9 @@ Sound *Window::getSound()
 
 GLFWwindow *Window::getWindow()
 {
-        return _window;
+    if (!_window)
+        return (_fullWindow);    
+    return _window;
 }
 
 WindowKeyEvents *Window::getEvents()
