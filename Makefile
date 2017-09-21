@@ -23,7 +23,7 @@ SRCDIR = src/
 SRCS = main.cpp Graphics.cpp Window.cpp MainMenu.cpp stb_image.cpp \
 	  Texture.cpp shader.cpp WindowKeyEvents.cpp Player.cpp \
 	  Sound.cpp Wall.cpp Floor.cpp Portal.cpp StaticWall.cpp Destructible.cpp \
-	  camera.cpp
+	  camera.cpp Maze.cpp
 
 SRC	= $(addprefix $(SRCDIR), $(SRCS))
 INCLUDE = $(wildcard $(INCLUDE_FOLDER)/*.hpp)
