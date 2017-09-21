@@ -69,15 +69,8 @@ int main(void)
 	glfwSetKeyCallback(window, key_callback);
 
 	// Initialize GLEW
-    //reuben to revisit to create a function
-	glewExperimental = true; // Needed for core profile
-
-	if (glewInit() != GLEW_OK) {
-		fprintf(stderr, "Failed to initialize GLEW\n");
-		getchar();
-		glfwTerminate();
-		return -1;
-	}
+    if (myWindow.initializeGlew() == false)
+        return -1;
 
 	graphics = new Graphics();
 	player = new Player();
@@ -95,7 +88,8 @@ int main(void)
 	wall.init();
 	staticWall.init();
 	portal.init();
-	destructible.init();
+	destructible.init1();
+    //destructible.init2();
     floor.init();
 	player->init();
 	Mix_VolumeMusic(10);
