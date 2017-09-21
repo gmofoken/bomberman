@@ -50,7 +50,6 @@ void Window::initiateSystems()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-
     //std::cout << "window full" << std::endl;
 
     _window = glfwCreateWindow(1920, 1080, "Bomberman", glfwGetPrimaryMonitor(), NULL);
@@ -128,26 +127,22 @@ void Window::terminateSystems()
 {
     fprintf(stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n");
     getchar();
-    glfwDestroyWindow(_window);
+    //glfwDestroyWindow(_window);
     glfwTerminate();
     exit(EXIT_FAILURE);
 }
 
 void Window::changeWindowSize()
 {
-    int width, height;
-    glfwGetWindowSize(_window, &width, &height);
-        glfwDestroyWindow(_window);
-        //glfwCloseWindow();
-    if (width == 1920 && height == 1080)
+    //int width, height;
+    //glfwGetWindowSize(_window, &width, &height);
+    if (_fullWindow)
     {
         initiateSystems2();
     }
-    else
+    else if (_window)
     {
-        //glfwDestroyWindow(_window);
         initiateSystems();
-        //_window = glfwCreateWindow(1920, 1080, "Bomberman", glfwGetPrimaryMonitor(), NULL);
     }
 }
 
@@ -158,7 +153,7 @@ Sound *Window::getSound()
 
 GLFWwindow *Window::getWindow()
 {
-    return _window;
+        return _window;
 }
 
 WindowKeyEvents *Window::getEvents()

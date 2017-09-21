@@ -33,6 +33,7 @@ private:
     Sound *_sound;
     Graphics *graphics;
     GLFWwindow* _window;
+    GLFWwindow* _fullWindow;    
     WindowKeyEvents *_keyEvents;
 };
 
