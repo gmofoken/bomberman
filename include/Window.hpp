@@ -18,8 +18,10 @@ public:
 
     void runGame();
     void initiateSystems();
+    void initiateSystems2();    
     void terminateSystems();
     void setGraphics(Graphics g);
+    void changeWindowSize();
 
     Sound* getSound();
     GLFWwindow* getWindow();

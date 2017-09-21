@@ -27,7 +27,7 @@ class MainMenu
 {
   public:
     MainMenu();
-    MainMenu(GLFWwindow *window, Graphics *g);
+    MainMenu(GLFWwindow *window, Window &, Graphics *g);
     ~MainMenu();
 
     MainMenu(MainMenu &obj);
@@ -39,6 +39,7 @@ class MainMenu
     void modSound();
     int getSoundVal();
     void gameExit();
+    Window getGameWindow();
     void toggleCommands(int input);
     void executeCommand(int command);
     void setGraphics(Graphics *g);
@@ -52,6 +53,7 @@ class MainMenu
   private:
     int _input;
     GLFWwindow *_window;
+    Window _gameWindow;
     Graphics *graphics;
     int _sound_val;
     GLuint menuVAO, menuTexture, menuEBO, menuVBO, programID;

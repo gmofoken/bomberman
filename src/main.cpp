@@ -90,7 +90,7 @@ int main(void)
 
 	graphics->initGlArrays();
 	//graphics->initPlayerVertices(&pVBO, &pVAO, &pEBO);
-	mainMenu = new MainMenu(window, graphics);
+	mainMenu = new MainMenu(window, myWindow, graphics);
 	mainMenu->initMenuImage();
 	wall.init();
 	staticWall.init();
@@ -128,6 +128,9 @@ int main(void)
 		case MAINMENU:
 			sound->playMusicForvever(MUSIC_MENU1);
 			mainMenu->LoadMainMenuImage();
+			myWindow = mainMenu->getGameWindow();
+			window = myWindow.getWindow();
+			glfwSetKeyCallback(window, key_callback);
 			break;
 
 		case GAMEPLAY:

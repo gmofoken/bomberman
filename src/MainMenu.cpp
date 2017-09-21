@@ -3,13 +3,14 @@
 
 MainMenu::MainMenu() {}
 
-MainMenu::MainMenu(GLFWwindow *window, Graphics *g)
+MainMenu::MainMenu(GLFWwindow *window, Window &gameWindow, Graphics *g)
 {
     Input command;
     this->_input = command.Start;
     this->_window = window;
+    this->_gameWindow = gameWindow;
     graphics = g;
-    _sound_val = 10;
+    _sound_val = 100;
 }
 
 MainMenu::~MainMenu()
@@ -38,6 +39,10 @@ void MainMenu::gameSettings(int input)
         break;
     }
 }
+Window MainMenu::getGameWindow()
+{
+    return (_gameWindow);
+}
 void MainMenu::executeCommand(int input)
 {
     Input command;
@@ -54,6 +59,7 @@ void MainMenu::executeCommand(int input)
     case command.Settings:
         std::cout << "Settings" << std::endl;
         gameSettings(5);
+        _gameWindow.changeWindowSize();
         break;
     case command.Exit:
         std::cout << "Exit" << std::endl;
@@ -92,10 +98,10 @@ void MainMenu::setGraphics(Graphics *g)
 }
 void MainMenu::modSound()
 {
-    if (_sound_val == 10)
+    if (_sound_val == 100)
         _sound_val = 0;
     else if (_sound_val == 0)
-        _sound_val = 10;
+        _sound_val = 100;
 }
 int MainMenu::getSoundVal()
 {
