@@ -19,6 +19,8 @@
 *.mod
 *.smod
 
+*.iso
+
 # Compiled Static libraries
 *.lai
 *.la
