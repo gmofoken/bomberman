@@ -12,9 +12,7 @@ public:
     Destructible();
     ~Destructible();
     
-    void init1();
-    void init2();
-    void init3();
+    void init();
     void test();
     void draw();
     

@@ -84,21 +84,6 @@ void Window::terminateSystems()
     exit(EXIT_FAILURE);
 }
 
-bool Window::initializeGlew()
-{
-    glewExperimental = true; // Needed for core profile
-    
-    if (glewInit() != GLEW_OK) {
-        fprintf(stderr, "Failed to initialize GLEW\n");
-        getchar();
-        glfwTerminate();
-        //return -1;
-        return false;
-    }
-    else
-        return true;
-}
-
 Sound* Window::getSound()
 {
     return (_sound);
