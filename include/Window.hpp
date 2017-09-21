@@ -20,6 +20,7 @@ public:
     void initiateSystems();
     void terminateSystems();
     void setGraphics(Graphics g);
+    bool initializeGlew();
 
     Sound* getSound();
     GLFWwindow* getWindow();
