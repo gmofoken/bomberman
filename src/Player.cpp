@@ -93,7 +93,7 @@ void Player::transform()
 
 	//glm::mat4 view;
 	glm::mat4 projection;
-	projection = glm::perspective(glm::radians(10.0f), (float)1024 / (float)768, 0.1f, 100.0f);
+	projection = glm::perspective(glm::radians(30.0f), (float)1024 / (float)768, 0.1f, 100.0f);
 	glUniformMatrix4fv(glGetUniformLocation(programID, "projection"), 1, GL_FALSE, &projection[0][0]);
 
 	// get matrix's uniform location and set matrix
