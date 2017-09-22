@@ -14,7 +14,7 @@ Player::Player()
 	//_model = glm::translate(_model, glm::vec3(0.4f,  -0.4f, -0.4f));
 
 	_projection = glm::perspective(glm::radians(30.0f), (float)WIDTH / (float) HEIGHT, 0.1f, 100.0f);
-	_model = glm::translate(_model, glm::vec3(0.0f,  -0.6f, -3.5f));
+	_model = glm::translate(_model, glm::vec3(0.0f,  -0.4f, -3.5f));
 	_model = glm::rotate(_model, glm::radians(50.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     //_model = glm::rotate(_model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	
@@ -126,7 +126,7 @@ void Player::player_callback(GLFWwindow* window)
 	
     if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
     {
-    	glm::vec3 bills(0.0,0.0,0.02);
+    	glm::vec3 bills(0.0,0.0,0.03);
 		_model = glm::translate(_model, bills);
 		if (x != 1)
 			y = 1;
@@ -134,7 +134,7 @@ void Player::player_callback(GLFWwindow* window)
     }
     else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
     {
-    	glm::vec3 bills(0.0,0.0,0.02);
+    	glm::vec3 bills(0.0,0.0,0.03);
 		_model = glm::translate(_model, bills);
 		if (x != 3)
 		y = 3;
@@ -142,7 +142,7 @@ void Player::player_callback(GLFWwindow* window)
     }
     else if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
     {
-    	glm::vec3 bills(0.0,0.0,0.02);
+    	glm::vec3 bills(0.0,0.0,0.03);
 		_model = glm::translate(_model, bills);
 		if (x != 2)
 		y = 2;
@@ -150,7 +150,7 @@ void Player::player_callback(GLFWwindow* window)
     }
     else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
     {
-    	glm::vec3 bills(0.0,0.0,0.02);
+    	glm::vec3 bills(0.0,0.0,0.03);
 		_model = glm::translate(_model, bills);
 		if (x != 4)
 		y = 4;
