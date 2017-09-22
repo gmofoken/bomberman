@@ -154,39 +154,50 @@ void Player::draw()
 
 /* emsimang: experimental code*/
 
-GLuint Player::getPVAO()
+GLuint Player::getPVAO() const
 {
 	return pVAO;
 }
 
-GLuint Player::getPVBO()
+GLuint Player::getPVBO() const
 {
 	return pVBO;
 }
 
-GLuint Player::getPEBO()
+GLuint Player::getPEBO() const
 {
 	return pEBO;
 }
 
-GLuint Player::getPTextureId()
+GLuint Player::getPTextureId() const
 {
 	return pTextureId;
 }
 
 /* emsimang: experimental code*/
 
-GLfloat Player::getYPos()
+GLfloat Player::getYPos() const
 {
 	return yPos;
 }
 
-GLfloat Player::getXPos()
+GLfloat Player::getXPos() const
 {
 	return xPos;
 }
 
-GLuint Player::getProgramId()
+GLuint Player::getProgramId() const
 {
 	return programID;
+}
+
+void Player::operator=(const Player &p)
+{
+	this->xPos = p.getXPos();
+	this->yPos = p.getYPos();
+	this->pVAO = p.getPVAO();
+	this->pVBO = p.getPVBO();
+	this->pEBO = p.getPEBO();
+	this->programID = p.getProgramId();
+	this->pTextureId = p.getPTextureId();
 }

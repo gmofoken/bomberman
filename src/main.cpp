@@ -83,6 +83,7 @@ int main(void)
     Floor floor;
     Camera camera(cameraPos, cameraFront, cameraUp, window);
 
+	gs.readPlayerState(player);
 	graphics->initGlArrays();
 	//graphics->initPlayerVertices(&pVBO, &pVAO, &pEBO);
 	mainMenu = new MainMenu(window, graphics);
@@ -151,11 +152,7 @@ int main(void)
 		glfwWindowShouldClose(window) == 0);
 
 	/* emsimang: experimental code*/
-
 	gs.savePlayerState(*player);
-	std::cout << "exiting..." << std::endl;
-	gs.readPlayerState();
-
 	/* emsimang: experimental code*/
 
 	// Cleanup VBO

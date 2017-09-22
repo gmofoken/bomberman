@@ -22,7 +22,7 @@ int GameState::savePlayerState(Player &p)
     return (0);
 }
 
-int GameState::readPlayerState()
+int GameState::readPlayerState(Player *p)
 {
     Player p2;
 
@@ -33,7 +33,15 @@ int GameState::readPlayerState()
             boost::archive::text_iarchive ia(ifs);
             ia >> p2;
         }
+        (*p) = p2;
     }
-    std::cout << "p2.xPos: " << p2.getXPos() << std::endl;
+    std::cout << "" << std::endl;
+    std::cout << "" << std::endl;
+    std::cout << "**************************************" << std::endl;
+    std::cout << "************* Debugging **************" << std::endl;
+    std::cout << "p.xPos: " << p->getXPos() << std::endl;
+    std::cout << "*************************************" << std::endl;
+    std::cout << "" << std::endl;
+    std::cout << "" << std::endl;
     return (0);
 }
