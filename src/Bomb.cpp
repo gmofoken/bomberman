@@ -1,11 +1,12 @@
 #include "Bomb.hpp"
 
-Bomb::Bomb(int radius, GLfloat x, GLfloat y)
+Bomb::Bomb(int countdown, int radius, GLfloat x, GLfloat y)
 {
-	this->countdown = 10;
+	this->countdown = countdown;
 	this->radius = radius;
 	this->x = x;
 	this->y = y;
+	this->time_dropped = 0;
 	this->display();
 	bomb_programID = LoadShaders("TransformationFragmentShader.hlsl", "TextureFragmentShader.hlsl");
 
@@ -35,10 +36,10 @@ Bomb::Bomb(int radius, GLfloat x, GLfloat y)
 
 Bomb::Bomb(void)
 {
-	//this->countdown = 0;
-	//this->radius = 0;
-	//this->x = 0;
-	//this->y = 0;
+	this->countdown = 0;
+	this->radius = 0;
+	this->x = 0;
+	this->y = 0;
 }
 
 Bomb::~Bomb(void)
@@ -86,20 +87,28 @@ void Bomb::set_y(GLfloat y)
 	this->y = y;
 }
 
-void explode(int value)
+void Bomb::explode(void)
 {
 	// print particles and collision here
-	std::cout << "Bomb explodes" <<  std::endl;
-	return;
+	if (this->time_dropped == 0)
+		return;
+	if (glfwGetTime() - this->time_dropped >= (this->countdown * 1.0f))
+	{
+		std::cout << "Bomb explodes" <<  std::endl;
+		this->time_dropped = 0;
+	}
 }
 
 void Bomb::drop(void)
 {
-	this->display();
-	std::cout << "Bomb planted" << std::endl;
-	glutTimerFunc(this->countdown * 1000, explode, 1);
-	return;
+	if (this->time_dropped == 0)
+	{
+		this->display();
+		this->time_dropped = glfwGetTime();
+		std::cout << "Bomb planted" << std::endl;
+	}
 }
+
 
 void Bomb::display(void)
 {

@@ -4,7 +4,6 @@
 
 Player::Player()
 {
-	bomb = new Bomb(3, 0, 0);
 	x = 0;
 	y = 0;
 	texture_programID = LoadShaders("TransformationFragmentShader.hlsl", "TextureFragmentShader.hlsl");
@@ -160,9 +159,6 @@ void Player::player_callback(GLFWwindow* window)
     }
     else if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
     {
-    	bomb->set_x(this->xPos);
-    	bomb->set_y(this->yPos);
-    	bomb->drop();
     }
  //   switch 
     

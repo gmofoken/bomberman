@@ -15,6 +15,7 @@ GLFWwindow* window;
 MainMenu *mainMenu;
 Graphics *graphics;
 Player *player;
+Bomb *bomb;
 
 // camera
 glm::vec3 cameraPos   = glm::vec3(-1.0f, 2.0f,  2.76f);
@@ -34,7 +35,9 @@ static void player_callback(GLFWwindow* window, int key, int scancode, int actio
         player->moveRight();
     if (key == GLFW_KEY_SPACE)
     {
-        std::cout << "Call the Bomb Class \n";
+		bomb->set_x(player->xPos);
+		bomb->set_y(player->yPos);
+		bomb->drop();
     }
 }
 
@@ -74,6 +77,7 @@ int main(void)
 
 	graphics = new Graphics();
 	player = new Player();
+	bomb = new Bomb(3, 3, 0, 0); // countdown, radius, x, y
 	Wall wall;
 	StaticWall staticWall;
 	Portal portal;
@@ -103,6 +107,7 @@ int main(void)
     //====================================================================================
     
     do {
+		bomb->explode();
 		// Clear the screen
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

@@ -18,6 +18,7 @@ class Bomb
 	private:
 		int countdown;
 		int radius;
+		int time_dropped;
 		GLfloat x;
 		GLfloat y;
 		/////////////////////////////////////////////////////////////////////////////
@@ -36,7 +37,7 @@ class Bomb
 		void display(void);
 	
 	public:
-		Bomb(int radius, GLfloat x, GLfloat y);
+		Bomb(int countdown, int radius, GLfloat x, GLfloat y);
 		Bomb(void);
 		~Bomb(void);
 
@@ -50,7 +51,7 @@ class Bomb
 		void set_x(GLfloat x);
 		void set_y(GLfloat y);
 
-		//void explode(int value);
+		void explode(void);
 		void drop(void);
 };
 
