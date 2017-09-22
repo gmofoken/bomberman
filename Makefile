@@ -20,10 +20,10 @@ SRC_FOLDER = src
 INCLUDE_FOLDER = include
 
 SRCDIR = src/
-SRCS = main.cpp Graphics.cpp Window.cpp MainMenu.cpp stb_image.cpp \
-	  Texture.cpp shader.cpp WindowKeyEvents.cpp Player.cpp \
+SRCS = main.cpp Graphics.cpp Window.cpp MainMenu.cpp stb_image.cpp loader.cpp \
+	  Texture.cpp shader.cpp WindowKeyEvents.cpp Player.cpp controls.cpp\
 	  Sound.cpp Wall.cpp Floor.cpp Portal.cpp StaticWall.cpp Destructible.cpp \
-	  camera.cpp
+	  camera.cpp Bomb.cpp
 
 SRC	= $(addprefix $(SRCDIR), $(SRCS))
 INCLUDE = $(wildcard $(INCLUDE_FOLDER)/*.hpp)
@@ -55,7 +55,7 @@ GLM = -I $(GLM_FOLDER)/include/GLM
 all: $(NAME)
 
 $(NAME): $(SRC) $(INCLUDE) $(BREW) $(_GLM_FOLDER) $(_GLEW_FOLDER) $(_GLFW_FOLDER) $(_SDL2_FOLDER) $(_SDL2_MIXER_FOLDER)
-	$(CC) $(CCFLAGS) -o $(NAME) $(SRC) -I $(INCLUDE_FOLDER) $(GLM) $(GLEW) $(GLFW) $(SDL2) $(SDL2_MIXER) -framework OpenGL
+	$(CC) $(CCFLAGS) -o $(NAME) $(SRC) -I $(INCLUDE_FOLDER) $(GLM) $(GLEW) $(GLFW) $(SDL2) $(SDL2_MIXER) -framework glut -framework OpenGL
 
 $(BREW):
 	git clone $(BREW_REPO) $(BREW_TMP)

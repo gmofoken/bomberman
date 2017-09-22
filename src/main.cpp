@@ -78,6 +78,7 @@ int main(void)
 	StaticWall staticWall;
 	Portal portal;
 	Destructible destructible;
+	Destructible destructible01;
     Floor floor;
     Camera camera(cameraPos, cameraFront, cameraUp, window);
 
@@ -89,8 +90,9 @@ int main(void)
 	staticWall.init();
 	portal.init();
 	destructible.init1();
+	destructible01.init1();
     floor.init();
-	player->init();
+	//player->init();
 	Mix_VolumeMusic(10);
     
     //=========================================================================================
@@ -127,14 +129,12 @@ int main(void)
 				staticWall.draw();
 				portal.draw();
 				destructible.draw();
+				destructible01.draw();
                 
-                glUseProgram(player->getProgramId());
-                camera.cameraFunction(player->getProgramId());
-                //player transformations
-                player->transform();
-                //draw player
-                player->draw();
-
+               // glUseProgram(player->getProgramId());
+				//camera.cameraFunction(player->getProgramId());
+				player->init();
+				player->player_callback(window);
 
 			default:
 				break;

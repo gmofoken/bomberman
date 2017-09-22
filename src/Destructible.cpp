@@ -8115,6 +8115,7 @@ void Destructible::init3()
 
 void Destructible::draw()
 {
+    //std::cout << "in destruct \n";
     glBindTexture(GL_TEXTURE_2D, destructibleTexture);
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES, 0, 1944);

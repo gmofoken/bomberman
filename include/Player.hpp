@@ -1,32 +1,40 @@
 #ifndef _PLAYER_HPP
 #define _PLAYER_HPP
 
-#include "Texture.hpp"
-#include "shader.hpp"
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
+#include "Bomberman.hpp"
+#include "camera.hpp"
+#include "loader.hpp"
+
 
 class Player
 {
 public:
+	Bomb *bomb;
 	Player();
 	~Player();
 	void init();
-	void moveUp();
+	void moveUp(); 
 	void moveDown();
 	void moveLeft();
 	void moveRight();
 	void transform();
+	void player_callback(GLFWwindow* window);
 	void draw();
-
-	GLfloat getXPos();
-	GLfloat getYPos();
-	GLuint getProgramId();
+	GLfloat xPos, yPos;
 
 private:
-	GLfloat xPos, yPos;
-	GLuint programID, pVAO, pVBO, pEBO, pTextureId;
+	
+	GLuint texture_programID, pUVO, pVAO, pVBO, pEBO, pTextureId;
+	glm::mat4 _view;
+    glm::mat4 _model;
+    glm::mat4 _projection;
+	unsigned int _modelLoc;
+	unsigned int _vmodelLoc;
+	std::vector<glm::vec3> _vertices;
+	std::vector<glm::vec2> _uvbuffer;
+	std::vector<glm::vec3> normals;
+	int x;
+	int y;
 };
 
 #endif
