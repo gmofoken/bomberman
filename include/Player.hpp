@@ -7,6 +7,17 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
+class Player;
+
+namespace boost
+{
+	namespace serialization
+	{
+		template <class archive>
+		void serialize(archive &ar, Player &p, const unsigned int version);
+	}
+}
+
 class Player
 {
 public:
@@ -23,10 +34,10 @@ public:
 	/* emsimang: experimental code*/
 	void setCoordinates(GLfloat x, GLfloat y);
 
-	// GLuint getPVAO();
-	// GLuint getPVBO();
-	// GLuint getPEBO();
-	// GLuint getPTextureId();
+	GLuint getPVAO();
+	GLuint getPVBO();
+	GLuint getPEBO();
+	GLuint getPTextureId();
 	/* emsimang: experimental code*/
 
 	GLfloat getXPos();
@@ -36,6 +47,8 @@ public:
 private:
 	GLfloat xPos, yPos;
 	GLuint programID, pVAO, pVBO, pEBO, pTextureId;
+	template <class archive> friend
+	void boost::serialization::serialize(archive &ar, Player &p, const unsigned int version);
 };
 
 #endif

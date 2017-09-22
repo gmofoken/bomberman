@@ -12,7 +12,7 @@ class GameState {
         GameState();
         ~GameState();
         int readPlayerState();        
-        int savePlayerState(Player p);
+        int savePlayerState(Player &p);
         void operator=(GameState *rhs);
         bool isEmpty(std::ifstream &ifs);
 
@@ -26,11 +26,13 @@ namespace boost
         template <class archive>
         void serialize(archive &ar, Player &p, const unsigned int version)
         {
-            GLuint x = p.getXPos();
-            GLuint y = p.getYPos();
-
-            ar << x;
-            ar << y;
+            ar & p.xPos;
+            ar & p.yPos;
+            // ar & p.pVAO;
+            // ar & p.pVBO;
+            // ar & p.pEBO;
+            // ar & p.programID;
+            // ar & p.pTextureId;
         }
     }
 }

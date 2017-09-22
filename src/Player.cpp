@@ -153,25 +153,26 @@ void Player::draw()
 }
 
 /* emsimang: experimental code*/
-// GLuint Player::getPVAO()
-// {
-// 	return pVAO;
-// }
 
-// GLuint Player::getPVBO()
-// {
-// 	return pVBO;
-// }
+GLuint Player::getPVAO()
+{
+	return pVAO;
+}
 
-// GLuint getPEBO()
-// {
-// 	return pEBO;
-// }
+GLuint Player::getPVBO()
+{
+	return pVBO;
+}
 
-// GLuint getPTextureId()
-// {
-// 	return pTextureId;
-// }
+GLuint Player::getPEBO()
+{
+	return pEBO;
+}
+
+GLuint Player::getPTextureId()
+{
+	return pTextureId;
+}
 
 /* emsimang: experimental code*/
 
