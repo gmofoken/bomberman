@@ -32,17 +32,17 @@ public:
 	void draw();
 
 	/* emsimang: experimental code*/
+	GLuint getPVAO() const;
+	GLuint getPVBO() const;
+	GLuint getPEBO() const;
+	GLuint getPTextureId() const;
+	void operator=(const Player &p);
 	void setCoordinates(GLfloat x, GLfloat y);
-
-	GLuint getPVAO();
-	GLuint getPVBO();
-	GLuint getPEBO();
-	GLuint getPTextureId();
 	/* emsimang: experimental code*/
 
-	GLfloat getXPos();
-	GLfloat getYPos();
-	GLuint getProgramId();
+	GLfloat getXPos() const;
+	GLfloat getYPos() const;
+	GLuint getProgramId() const;
 
 private:
 	GLfloat xPos, yPos;

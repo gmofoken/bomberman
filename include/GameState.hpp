@@ -11,7 +11,7 @@ class GameState {
     public:
         GameState();
         ~GameState();
-        int readPlayerState();        
+        int readPlayerState(Player *p);
         int savePlayerState(Player &p);
         void operator=(GameState *rhs);
         bool isEmpty(std::ifstream &ifs);
@@ -28,11 +28,11 @@ namespace boost
         {
             ar & p.xPos;
             ar & p.yPos;
-            // ar & p.pVAO;
-            // ar & p.pVBO;
-            // ar & p.pEBO;
-            // ar & p.programID;
-            // ar & p.pTextureId;
+            ar & p.pVAO;
+            ar & p.pVBO;
+            ar & p.pEBO;
+            ar & p.programID;
+            ar & p.pTextureId;
         }
     }
 }
