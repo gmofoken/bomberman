@@ -6,17 +6,7 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
-
-class Player;
-
-namespace boost
-{
-	namespace serialization
-	{
-		template <class archive>
-		void serialize(archive &ar, Player &p, const unsigned int version);
-	}
-}
+#include "serialize.hpp"
 
 class Player
 {

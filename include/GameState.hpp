@@ -1,17 +1,14 @@
 #ifndef GAMESTATE_HPP
 #define GAMESTATE_HPP
 
-#include <fstream>
 #include "Player.hpp"
 #include "Bomberman.hpp"
-#include "boost/archive/text_oarchive.hpp"
-#include "boost/archive/text_iarchive.hpp"
 
 class GameState {
     public:
         GameState();
         ~GameState();
-        int readPlayerState(Player *p);
+        int loadPlayerState(Player *p);
         int savePlayerState(Player &p);
         void operator=(GameState *rhs);
         bool isEmpty(std::ifstream &ifs);

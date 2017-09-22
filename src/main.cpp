@@ -83,7 +83,7 @@ int main(void)
     Floor floor;
     Camera camera(cameraPos, cameraFront, cameraUp, window);
 
-	gs.readPlayerState(player);
+	gs.loadPlayerState(player);
 	graphics->initGlArrays();
 	//graphics->initPlayerVertices(&pVBO, &pVAO, &pEBO);
 	mainMenu = new MainMenu(window, graphics);
@@ -151,9 +151,8 @@ int main(void)
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
 		glfwWindowShouldClose(window) == 0);
 
-	/* emsimang: experimental code*/
+	/* emsimang: save the player's coords*/
 	gs.savePlayerState(*player);
-	/* emsimang: experimental code*/
 
 	// Cleanup VBO
 	delete graphics;
