@@ -20,6 +20,10 @@ public:
 	void transform();
 	void draw();
 
+	GLfloat getXPos();
+	GLfloat getYPos();
+	GLuint getProgramId();
+
 private:
 	GLfloat xPos, yPos;
 	GLuint programID, pVAO, pVBO, pEBO, pTextureId;

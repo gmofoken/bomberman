@@ -17,25 +17,25 @@ Graphics *graphics;
 Player *player;
 
 // camera
-glm::vec3 cameraPos   = glm::vec3(-1.0f, 2.0f,  3.0f);
+glm::vec3 cameraPos   = glm::vec3(-1.0f, 2.0f,  2.76f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  1.0f);
 
-//move player callback        :Trinity
+//move player callback
 static void player_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		player->moveDown();
-	if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		player->moveUp();
-	if (key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		player->moveLeft();
-	if (key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		player->moveRight();
-	if (key == GLFW_KEY_SPACE)
-	{
-		std::cout << "Call the Bomb Class \n";
-	}
+    if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT))
+        player->moveDown();
+    if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT))
+        player->moveUp();
+    if (key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT))
+        player->moveLeft();
+    if (key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT))
+        player->moveRight();
+    if (key == GLFW_KEY_SPACE)
+    {
+        std::cout << "Call the Bomb Class \n";
+    }
 }
 
 //Key Checking input        :Cradebe
@@ -68,16 +68,9 @@ int main(void)
 
 	glfwSetKeyCallback(window, key_callback);
 
-	// Initialize GLEW
-    //reuben to revisit to create a function
-	glewExperimental = true; // Needed for core profile
-
-	if (glewInit() != GLEW_OK) {
-		fprintf(stderr, "Failed to initialize GLEW\n");
-		getchar();
-		glfwTerminate();
-		return -1;
-	}
+    // Initialize GLEW
+    if (myWindow.initializeGlew() == false)
+        return -1;
 
 	graphics = new Graphics();
 	player = new Player();
@@ -95,7 +88,7 @@ int main(void)
 	wall.init();
 	staticWall.init();
 	portal.init();
-	destructible.init();
+	destructible.init1();
     floor.init();
 	player->init();
 	Mix_VolumeMusic(10);
@@ -134,6 +127,14 @@ int main(void)
 				staticWall.draw();
 				portal.draw();
 				destructible.draw();
+                
+                glUseProgram(player->getProgramId());
+                camera.cameraFunction(player->getProgramId());
+                //player transformations
+                player->transform();
+                //draw player
+                player->draw();
+
 
 			default:
 				break;

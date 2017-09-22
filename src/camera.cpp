@@ -91,14 +91,14 @@ void Camera::processKeyInput()
         glfwSetWindowShouldClose(_window, true);
     
     _cameraSpeed = 0.5 * _deltaTime;
-    if (glfwGetKey(_window, GLFW_KEY_UP) == GLFW_PRESS)
+    if (glfwGetKey(_window, GLFW_KEY_KP_ADD) == GLFW_PRESS)
         _pos += _cameraSpeed * _front;
-    if (glfwGetKey(_window, GLFW_KEY_DOWN) == GLFW_PRESS)
+    if (glfwGetKey(_window, GLFW_KEY_KP_SUBTRACT ) == GLFW_PRESS)
         _pos -= _cameraSpeed * _front;
-    if (glfwGetKey(_window, GLFW_KEY_LEFT) == GLFW_PRESS)
+    /*if (glfwGetKey(_window, GLFW_KEY_LEFT) == GLFW_PRESS)
         _pos -= glm::normalize(glm::cross(_front, _up)) * _cameraSpeed;
     if (glfwGetKey(_window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-        _pos += glm::normalize(glm::cross(_front, _up)) * _cameraSpeed;
+        _pos += glm::normalize(glm::cross(_front, _up)) * _cameraSpeed;*/
     //if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
       //  _model = glm::rotate(_model, glm::radians(-135.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 }
