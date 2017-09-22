@@ -1,7 +1,7 @@
 #include "Player.hpp"
 #include "Bomberman.hpp"
 
-Player::Player()
+Player::Player(std::list<Wall> walls)
 {
 	x = 0;
 	y = 0;
@@ -16,7 +16,7 @@ Player::Player()
 	_projection = glm::perspective(glm::radians(30.0f), (float)WIDTH / (float) HEIGHT, 0.1f, 100.0f);
 	_model = glm::translate(_model, glm::vec3(0.0f,  -0.4f, -3.5f));
 	_model = glm::rotate(_model, glm::radians(50.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    //_model = glm::rotate(_model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+    //_model = glm::rotate(_model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	
 	_model = glm::scale(_model, glm::vec3(0.1));
 
@@ -26,7 +26,8 @@ Player::Player()
 		glm::vec3(0.0f, 1.0f,  1.0f)  // Head is up (set to 0,-1,0 to look upside-down)
    );
 
-   bool res = loadOBJ("BombermanModels/bomberman.obj", _vertices, _uvbuffer, normals); 
+   bool res = loadOBJ("BombermanModels/bomberman.obj", _vertices, _uvbuffer, normals);
+   this->walls = walls;
 }
 
 Player::~Player()
@@ -48,7 +49,6 @@ void Player::init()
 		glm::mat4 ModelMatrix = _model;
 
 		glUniformMatrix4fv(glGetUniformLocation(texture_programID, "transform"), 1, GL_FALSE, &_projection[0][0]);
-		std::cout << "Player draw" << std::endl;
 
 		if(y == 1 && x != 1)
 		{
@@ -102,39 +102,119 @@ void Player::init()
 
 }
 
-void Player::moveUp()
+bool Player::moveUp()
 {
-	yPos += 0.025f;
+	std::list<Wall>::iterator it;
+	
+		for (it = walls.begin(); it != walls.end(); ++it)
+		{
+			bool towardsWall = xPos + PLAYER > it->getXPos() - 0.5 &&
+				xPos <= it->getXPos() - 0.5;
+			bool pastWall = xPos + PLAYER >= it->getXPos() - 0.5 + WALL
+				&& xPos < it->getXPos() - 0.5 + WALL;
+			bool isWallUp = it->getYPos() + 1.1 > yPos;
+	
+			if ((towardsWall || pastWall) && isWallUp)
+				return false;
+		}
+		return true;
 }
 
-void Player::moveDown()
+bool Player::moveDown()
 {
-	yPos -= 0.025f;
+	std::list<Wall>::iterator it;
+	
+		std::cout << xPos << "," << yPos << " ";
+		it = walls.begin();
+		std::cout << it->getXPos() + 0.9 << "," << it->getYPos() - 0.9 << std::endl;
+	
+		for (it = walls.begin(); it != walls.end(); ++it)
+		{
+			bool towardsWall = xPos + PLAYER > it->getXPos() - 0.5 &&
+				xPos <= it->getXPos() - 0.5;
+			bool pastWall = xPos + PLAYER >= it->getXPos() - 0.5 + WALL
+				&& xPos < it->getXPos() - 0.5 + WALL;
+			bool isWallDown = it->getYPos() + 1.1 < yPos - PLAYER;
+	
+			if ((towardsWall || pastWall) && isWallDown)
+				return false;
+		}
+		return true;
 }
 
-void Player::moveLeft()
+bool Player::moveLeft()
 {
-	xPos -= 0.025f;
+	std::list<Wall>::iterator it;
+		for (it = walls.begin(); it != walls.end(); ++it)
+		{
+			bool towardsWall = false;
+			bool pastWall = false;
+			bool isWallLeft = false;
+			if(xPos > it->getXPos() && xPos < it->getXPos() + WALL)
+			{
+				if(yPos > it->getXPos() && yPos < it->getYPos() - WALL)
+				{
+					std::cout << "we are in \n";
+					towardsWall = true;
+					pastWall = true;
+					isWallLeft = true;
+				}
+			}
+			// bool towardsWall = yPos - PLAYER < it->getYPos() + 1.1 &&
+			// 	yPos >= it->getYPos() + 1.1;
+			// bool pastWall = yPos - PLAYER <= it->getYPos() + 1.1 - WALL
+			// 	&& yPos > it->getYPos() + 1.1 - WALL;
+			// bool isWallLeft = it->getXPos() - 0.4 < xPos;
+			//std::cout << "Wall: " << it->getXPos() << "," << it->getYPos() << " player:   " << xPos << "   colided! \n";
+			if ((towardsWall || pastWall) && isWallLeft)
+			{
+				return false;
+			}
+		}
+		return true;
 }
-void Player::moveRight()
+bool Player::moveRight()
 {
-	xPos += 0.025f;
+	std::list<Wall>::iterator it;
+	
+	std::cout << "Player: " << xPos << "," << yPos << " Wall: ";
+	it = walls.begin();
+	std::cout << it->getXPos() - 0.5 << "," << it->getYPos() + 1.1 - WALL << std::endl;
+
+	for (it = walls.begin(); it != walls.end(); ++it)
+	{
+		bool towardsWall = yPos - PLAYER < it->getYPos() + 1.1 &&
+			yPos > it->getYPos() + 1.1;
+		bool oppWall = yPos < it->getYPos() - 0.9
+			&&  yPos - PLAYER > it->getYPos() - 0.9 - WALL;
+		bool pastWall = yPos - PLAYER < it->getYPos() + 1.1 - WALL
+			&& yPos > it->getYPos() + 1.1 - WALL;
+		bool isWallRight = it->getXPos() - 0.4 > xPos + PLAYER
+			&& (towardsWall || pastWall || oppWall);
+
+		if ((towardsWall || pastWall || oppWall) && isWallRight)
+			return false;
+	}
+	return true;
 }
 
 void Player::player_callback(GLFWwindow* window)
 {
-	
     if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
     {
-    	glm::vec3 bills(0.0,0.0,0.03);
-		_model = glm::translate(_model, bills);
+		glm::vec3 bills(0.0,0.0,0.03);
+		xPos -= 0.03f;
+		if(moveLeft()) 
+			_model = glm::translate(_model, bills);
 		if (x != 1)
 			y = 1;
         std::cout << "a\n";
     }
     else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
     {
-    	glm::vec3 bills(0.0,0.0,0.03);
+
+		glm::vec3 bills(0.0,0.0,0.03);
+		xPos += 0.03f;
 		_model = glm::translate(_model, bills);
 		if (x != 3)
 		y = 3;
@@ -142,7 +222,8 @@ void Player::player_callback(GLFWwindow* window)
     }
     else if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
     {
-    	glm::vec3 bills(0.0,0.0,0.03);
+		glm::vec3 bills(0.0,0.0,0.03);
+		yPos += 0.03f;
 		_model = glm::translate(_model, bills);
 		if (x != 2)
 		y = 2;
@@ -150,7 +231,8 @@ void Player::player_callback(GLFWwindow* window)
     }
     else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
     {
-    	glm::vec3 bills(0.0,0.0,0.03);
+		glm::vec3 bills(0.0,0.0,0.03);
+		yPos -= 0.03f;
 		_model = glm::translate(_model, bills);
 		if (x != 4)
 		y = 4;

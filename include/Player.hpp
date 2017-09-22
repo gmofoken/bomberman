@@ -5,16 +5,19 @@
 #include "camera.hpp"
 #include "loader.hpp"
 
+#define PLAYER 0.03f
+#define WALL 0.1f
+
 class Player
 {
 public:
-	Player();
+	Player(std::list<Wall> walls);
 	~Player();
 	void init();
-	void moveUp(); 
-	void moveDown();
-	void moveLeft();
-	void moveRight();
+	bool moveUp(); 
+	bool moveDown();
+	bool moveLeft();
+	bool moveRight();
 	void transform();
 	void player_callback(GLFWwindow* window);
 	void draw();
@@ -32,6 +35,7 @@ private:
 	std::vector<glm::vec3> normals;
 	int x;
 	int y;
+	std::list<Wall> walls;
 };
 
 #endif

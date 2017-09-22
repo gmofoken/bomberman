@@ -17,7 +17,7 @@ Wall::Wall()
 	glDeleteBuffers(1, &vertexbuffer);
 }
 
-Wall::Wall(int x, int y, bool isDec)
+Wall::Wall(GLfloat x, GLfloat y, bool isDec)
 {
 	xPos = x;
 	yPos = y;
@@ -281,4 +281,14 @@ void Wall::draw()
 	// Draw the triangle !
 	//glDrawElements(GL_TRIANGLES, 72, GL_UNSIGNED_INT, 0); // 3 indices starting at 0 -> 1 triangle
     glDrawArrays(GL_TRIANGLES, 0, 114);
+}
+
+GLfloat Wall::getXPos()
+{
+    return xPos;
+}
+
+GLfloat Wall::getYPos()
+{
+    return yPos;
 }
