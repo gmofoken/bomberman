@@ -20,9 +20,9 @@ SRC_FOLDER = src
 INCLUDE_FOLDER = include
 
 SRCDIR = src/
-SRCS = main.cpp Graphics.cpp Window.cpp MainMenu.cpp stb_image.cpp loader.cpp \
+SRCS = main.cpp Graphics.cpp Window.cpp MainMenu.cpp stb_image.cpp loader.cpp\
 	  Texture.cpp shader.cpp WindowKeyEvents.cpp Player.cpp controls.cpp\
-	  Sound.cpp Wall.cpp Floor.cpp Portal.cpp StaticWall.cpp Destructible.cpp \
+	  Sound.cpp Wall.cpp Floor.cpp Portal.cpp StaticWall.cpp Destructible.cpp\
 	  camera.cpp Bomb.cpp
 
 SRC	= $(addprefix $(SRCDIR), $(SRCS))

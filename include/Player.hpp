@@ -5,25 +5,28 @@
 #include "camera.hpp"
 #include "loader.hpp"
 
+#define PLAYER 0.03f
+#define WALL 0.1f
 
 class Player
 {
 public:
-	Bomb *bomb;
-	Player();
+	Player(std::list<Wall> walls);
 	~Player();
 	void init();
-	void moveUp(); 
-	void moveDown();
-	void moveLeft();
-	void moveRight();
+	bool moveUp(); 
+	bool moveDown();
+	bool moveLeft();
+	bool moveRight();
 	void transform();
 	void player_callback(GLFWwindow* window);
 	void draw();
-	GLfloat xPos, yPos;
+	GLfloat get_xPos(void);
+	GLfloat get_yPos(void);
+
 
 private:
-	
+	GLfloat xPos, yPos;
 	GLuint texture_programID, pUVO, pVAO, pVBO, pEBO, pTextureId;
 	glm::mat4 _view;
     glm::mat4 _model;
@@ -35,6 +38,7 @@ private:
 	std::vector<glm::vec3> normals;
 	int x;
 	int y;
+	std::list<Wall> walls;
 };
 
 #endif

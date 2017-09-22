@@ -99,10 +99,9 @@ void Bomb::explode(void)
 	// print particles and collision here
 	if (this->time_dropped == 0)
 		return;
-	if (glfwGetTime() - this->time_dropped >= (this->countdown * 1.0f))
+	if (glfwGetTime() - this->time_dropped >= (this->countdown * 2.0f))
 	{
-		std::cout << "Bomb explodes" <<  std::endl;
-		this->time_dropped = 0;
+			this->time_dropped = 0;
 	}
 }
 
@@ -120,7 +119,6 @@ void Bomb::drop(void)
 void Bomb::display(void)
 {
 	// display bomb
-	std::cout << "display bomb\n";
 		glUseProgram(bomb_programID);
 	
 		_view = getViewMatrix();

@@ -10,6 +10,7 @@
 #include "StaticWall.hpp"
 #include "Destructible.hpp"
 #include "camera.hpp"
+#include "Bomb.hpp"
 
 GLFWwindow* window;
 MainMenu *mainMenu;
@@ -17,7 +18,7 @@ Graphics *graphics;
 Player *player;
 Bomb *bomb;
 
-// camera 
+// camera
 glm::vec3 cameraPos   = glm::vec3(-1.0f, 2.0f,  2.76f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  1.0f);
@@ -25,21 +26,21 @@ glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  1.0f);
 //move player callback
 static void player_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT))
-        player->moveDown();
-    if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT))
-        player->moveUp();
-    if (key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT))
-        player->moveLeft();
-    if (key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT))
-        player->moveRight();
-    if (key == GLFW_KEY_SPACE)
-    {
-		bomb->set_x(player->xPos);
-		bomb->set_y(player->yPos);
+    // if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT))
+    //     player->moveDown();
+    // if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT))
+    //     player->moveUp();
+    // if (key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT))
+    //     player->moveLeft();
+    // if (key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT))
+    //     player->moveRight();
+     if (key == GLFW_KEY_SPACE)
+     {
+        bomb->set_x(player->get_xPos());
+		bomb->set_y(player->get_yPos());
 		bomb->drop();
 		std::cout << "Space pressed\n";
-    }
+     }
 }
 
 //Key Checking input        :Cradebe
@@ -77,7 +78,7 @@ int main(void)
         return -1;
 
 	graphics = new Graphics();
-	player = new Player();
+	// player = new Player();
 	bomb = new Bomb(3, 0, 0); // countdown, radius, x, y
 	Wall wall;
 	StaticWall staticWall;
@@ -93,6 +94,7 @@ int main(void)
 	mainMenu->initMenuImage();
 	wall.init();
 	staticWall.init();
+	player = new Player(staticWall.getWalls());
 	portal.init();
 	destructible.init1();
 	destructible01.init1();
@@ -108,11 +110,10 @@ int main(void)
     //====================================================================================
     
     do {
-		bomb->explode();
 		// Clear the screen
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		bomb->explode();
 		keyEvents->keyEventsWrapper(window, sound, graphics);
 		switch (graphics->getDrawMode())
 		{
