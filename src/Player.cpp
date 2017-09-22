@@ -152,6 +152,29 @@ void Player::draw()
     glDrawArrays(GL_TRIANGLES, 0, 36);
 }
 
+/* emsimang: experimental code*/
+// GLuint Player::getPVAO()
+// {
+// 	return pVAO;
+// }
+
+// GLuint Player::getPVBO()
+// {
+// 	return pVBO;
+// }
+
+// GLuint getPEBO()
+// {
+// 	return pEBO;
+// }
+
+// GLuint getPTextureId()
+// {
+// 	return pTextureId;
+// }
+
+/* emsimang: experimental code*/
+
 GLfloat Player::getYPos()
 {
 	return yPos;

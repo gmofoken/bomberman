@@ -20,6 +20,15 @@ public:
 	void transform();
 	void draw();
 
+	/* emsimang: experimental code*/
+	void setCoordinates(GLfloat x, GLfloat y);
+
+	// GLuint getPVAO();
+	// GLuint getPVBO();
+	// GLuint getPEBO();
+	// GLuint getPTextureId();
+	/* emsimang: experimental code*/
+
 	GLfloat getXPos();
 	GLfloat getYPos();
 	GLuint getProgramId();

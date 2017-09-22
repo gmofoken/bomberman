@@ -3,8 +3,6 @@
 
 # define HEIGHT 768
 # define WIDTH 1024
-#define H 768
-#define W 1024
 #define GLEW_STATIC
 
 #include <iostream>

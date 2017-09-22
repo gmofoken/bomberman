@@ -10,6 +10,7 @@
 #include "StaticWall.hpp"
 #include "Destructible.hpp"
 #include "camera.hpp"
+#include "Gamestate.hpp"
 
 GLFWwindow* window;
 MainMenu *mainMenu;
@@ -58,6 +59,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 int main(void)
 {
 	Sound *sound;
+	GameState gs;	
 	Window myWindow;
 	WindowKeyEvents *keyEvents;
 
@@ -147,6 +149,14 @@ int main(void)
 	} // Check if the ESC key was pressed or the window was closed
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
 		glfwWindowShouldClose(window) == 0);
+
+	/* emsimang: experimental code*/
+
+	gs.savePlayerState(*player);
+	std::cout << "exiting..." << std::endl;
+	gs.readPlayerState();
+
+	/* emsimang: experimental code*/
 
 	// Cleanup VBO
 	delete graphics;
