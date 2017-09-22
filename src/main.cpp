@@ -42,12 +42,14 @@ static void player_callback(GLFWwindow *window, int key, int scancode, int actio
 //Key Checking input        :Cradebe
 static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
-	glEnable(GL_DEPTH_TEST);
 	if ((key == GLFW_KEY_DOWN || key == GLFW_KEY_UP || key == GLFW_KEY_ENTER) && action == GLFW_PRESS)
 	{
 		mainMenu->toggleCommands(key);
 		if (mainMenu->getInput() == 0 && key == GLFW_KEY_ENTER)
+		{
+			glEnable(GL_DEPTH_TEST);
 			glfwSetKeyCallback(window, player_callback);
+		}
 	}
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
@@ -120,7 +122,7 @@ int main(void)
 		{
 			std::cout << "vol " << mainMenu->getSoundVal() << std::endl;
 			soundVal = mainMenu->getSoundVal();
-			Mix_VolumeMusic(soundVal);			
+			Mix_VolumeMusic(soundVal);
 		}
 		keyEvents->keyEventsWrapper(window, sound, graphics);
 		switch (graphics->getDrawMode())
@@ -130,7 +132,16 @@ int main(void)
 			mainMenu->LoadMainMenuImage();
 			myWindow = mainMenu->getGameWindow();
 			window = myWindow.getWindow();
+			keyEvents->keyEventsWrapper(window, sound, graphics);
 			glfwSetKeyCallback(window, key_callback);
+			wall.init();
+			staticWall.init();
+			destructible.init();
+			floor.init();
+			//portal->init();
+			//player->init();
+			camera.processKeyInput(window);
+			glUseProgram(shadersID);
 			break;
 
 		case GAMEPLAY:

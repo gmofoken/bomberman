@@ -139,15 +139,14 @@ void Window::changeWindowSize()
     if (_fullWindow)
     {
         initiateSystems2();
+        glfwDestroyWindow(_fullWindow);        
         _fullWindow = nullptr;
-        //glfwDestroyWindow(_fullWindow);
     }
     else if (_window)
     {
         initiateSystems();
-        
-        _window = nullptr; 
-        //glfwDestroyWindow(_window);
+        glfwDestroyWindow(_window);        
+        _window = nullptr;
     }
 }
 
@@ -158,7 +157,9 @@ Sound *Window::getSound()
 
 GLFWwindow *Window::getWindow()
 {
-        return _window;
+    if (!_window)
+        return (_fullWindow);
+    return _window;
 }
 
 WindowKeyEvents *Window::getEvents()
