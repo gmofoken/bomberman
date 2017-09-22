@@ -30,38 +30,30 @@ void Destructible::init()
     GLfloat fUnit = 0.2;
 
     
-    std::ifstream infile("maps/map.txt");
-    std::vector <std::vector <GLfloat> > vertexData;
+    std::ifstream infile;
+    GLfloat *vertexData;
+    char *cNum;
+    int count = 0;
 
-    while (infile)
-    {
-        std::string holder;
-        std::vector <std::string> record;
-        
-        if (!getline(infile, holder))
-            break;
-        
-        std::istringstream ss(holder);
-        while (ss)
-        {
-            std::string s;
-            if (!getline(ss, s, ','))
-                break;
-
-            record.push_back(s);
+    infile.open("map.txt");
+    if (infile.is_open()){
+        while(infile.good()){
+            infile.getline(cNum, 256, ',');
+            vertexData[count] = atof(cNum);
+            count++;
         }
-        vertexData.push_back(record);
+        std::cout << vertexData << std::endl;
+        infile.close();
+    }else{
+        std::cout << "Error opening file \n";
     }
-    if (!infile.eof())
-        std::cerr << "End of file\n"; 
 
 
-    glGenVertexArrays(1, &vao);
-    
+
+
+    glGenVertexArrays(1, &vao);    
     glGenBuffers(1, &vbo);
-    
     glBindVertexArray(vao);
-    
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
     
