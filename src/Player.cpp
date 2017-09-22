@@ -18,7 +18,7 @@ Player::Player()
 	_model = glm::translate(_model, glm::vec3(0.0f,  -0.4f, -3.5f));
 	_model = glm::rotate(_model, glm::radians(50.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     //_model = glm::rotate(_model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-	
+	 
 	_model = glm::scale(_model, glm::vec3(0.1));
 
 	_view       = glm::lookAt(
@@ -156,9 +156,6 @@ void Player::player_callback(GLFWwindow* window)
 		if (x != 4)
 		y = 4;
       //  std::cout << "dt\n";
-    }
-    else if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-    {
     }
  //   switch 
     

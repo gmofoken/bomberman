@@ -17,7 +17,7 @@ Graphics *graphics;
 Player *player;
 Bomb *bomb;
 
-// camera
+// camera 
 glm::vec3 cameraPos   = glm::vec3(-1.0f, 2.0f,  2.76f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  1.0f);
@@ -38,6 +38,7 @@ static void player_callback(GLFWwindow* window, int key, int scancode, int actio
 		bomb->set_x(player->xPos);
 		bomb->set_y(player->yPos);
 		bomb->drop();
+		std::cout << "Space pressed\n";
     }
 }
 
@@ -77,7 +78,7 @@ int main(void)
 
 	graphics = new Graphics();
 	player = new Player();
-	bomb = new Bomb(3, 3, 0, 0); // countdown, radius, x, y
+	bomb = new Bomb(3, 0, 0); // countdown, radius, x, y
 	Wall wall;
 	StaticWall staticWall;
 	Portal portal;
@@ -135,7 +136,8 @@ int main(void)
 				portal.draw();
 				destructible.draw();
 				destructible01.draw();
-                
+                if (bomb->get_bombStatus() != 0)
+                	bomb->display();
                // glUseProgram(player->getProgramId());
 				//camera.cameraFunction(player->getProgramId());
 				player->init();

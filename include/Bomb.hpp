@@ -6,7 +6,7 @@
 //#include "glm/glm.hpp"
 //#include "glm/gtc/matrix_transform.hpp"
 //#include "glm/gtc/type_ptr.hpp"
-#include "Bomberman.hpp"
+#include "Bomberman.hpp" 
 //#include "Bomberman.hpp"
 #include "camera.hpp"
 #include "loader.hpp"
@@ -34,15 +34,17 @@ class Bomb
 		std::vector<glm::vec3> normals;
 		/////////////////////////////////////////////////////////////////////////////
 
-		void display(void);
+		
 	
 	public:
-		Bomb(int countdown, int radius, GLfloat x, GLfloat y);
+		Bomb(int radius, GLfloat x, GLfloat y);
 		Bomb(void);
 		~Bomb(void);
+		void display(void);
 
 		int get_countdown(void);
 		int get_radius(void);
+		int get_bombStatus(void);
 		GLfloat get_x(void);
 		GLfloat get_y(void);
 

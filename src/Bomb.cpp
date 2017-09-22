@@ -1,13 +1,15 @@
 #include "Bomb.hpp"
 
-Bomb::Bomb(int countdown, int radius, GLfloat x, GLfloat y)
+Bomb::Bomb(int radius, GLfloat x, GLfloat y)
 {
-	this->countdown = countdown;
+	 std::cout << "top of constructer \n";
+	this->countdown = 3;
 	this->radius = radius;
 	this->x = x;
 	this->y = y;
 	this->time_dropped = 0;
 	this->display();
+	// std::cout << "insider constructer \n";
 	bomb_programID = LoadShaders("TransformationFragmentShader.hlsl", "TextureFragmentShader.hlsl");
 
 	Texture* text = new Texture("BombermanModels/bombs/bombText.png", &pBombId);
@@ -21,8 +23,8 @@ Bomb::Bomb(int countdown, int radius, GLfloat x, GLfloat y)
 	//_model = glm::rotate(_model, glm::radians(50.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     //_model = glm::rotate(_model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	
-	_model = glm::scale(_model, glm::vec3(0.7));
-
+	_model = glm::scale(_model, glm::vec3(0.9));
+ 
 	_view       = glm::lookAt(
 		glm::vec3(-1.0f, 2.0f,  3.0f), // Camera is at (4,3,-3), in World Space
 		glm::vec3(0.0f, 0.0f, -1.0f), // and looks at the origin
@@ -30,6 +32,7 @@ Bomb::Bomb(int countdown, int radius, GLfloat x, GLfloat y)
    );
 
    bool res = loadOBJ("BombermanModels/bombs/bomb.obj", _vertices, _uvbuffer, normals); 
+   //std::cout << "end of constructer \n";
 
 
 }
@@ -86,6 +89,10 @@ void Bomb::set_y(GLfloat y)
 {
 	this->y = y;
 }
+int Bomb::get_bombStatus(void)
+{
+	return this->time_dropped;
+}
 
 void Bomb::explode(void)
 {
@@ -138,7 +145,6 @@ void Bomb::display(void)
 		glBindBuffer(GL_ARRAY_BUFFER, pUVO);
 		glBufferData(GL_ARRAY_BUFFER, _uvbuffer.size() * sizeof(glm::vec2), &_uvbuffer[0], GL_STATIC_DRAW);
 		
-		//pTextureId = Texture;
 
 		glBindTexture(GL_TEXTURE_2D, pBombId);
 
