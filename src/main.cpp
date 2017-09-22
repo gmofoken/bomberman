@@ -90,7 +90,7 @@ int main(void)
 	portal.init();
 	destructible.init1();
     floor.init();
-	player->init();
+	//player->init();
 	Mix_VolumeMusic(10);
     
     //=========================================================================================
@@ -128,13 +128,11 @@ int main(void)
 				portal.draw();
 				destructible.draw();
                 
-                glUseProgram(player->getProgramId());
-                camera.cameraFunction(player->getProgramId());
-                //player transformations
-                player->transform();
-                //draw player
-                player->draw();
-
+               // glUseProgram(player->getProgramId());
+                //camera.cameraFunction(player->getProgramId());
+				//player transformations
+				player->init();
+				player->player_callback(window);
 
 			default:
 				break;

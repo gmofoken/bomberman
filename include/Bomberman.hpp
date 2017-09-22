@@ -19,7 +19,6 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "Texture.hpp"
 #include "shader.hpp"
-
-
+#include "controls.hpp"
 
 #endif

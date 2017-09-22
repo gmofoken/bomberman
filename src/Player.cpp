@@ -1,9 +1,32 @@
 #include "Player.hpp"
+#include "Bomberman.hpp"
 
 Player::Player()
 {
-	xPos = -1.15f;
-	yPos = 2.075f;
+	x = 0;
+	y = 0;
+	texture_programID = LoadShaders("TransformationFragmentShader.hlsl", "TextureFragmentShader.hlsl");
+
+	Texture* text = new Texture("BombermanModels/bombermanText.png", &pTextureId);
+	this->xPos = 0.0f;
+	this->yPos = 0.0f;
+	_model = glm::mat4(1.0);
+	//_model = glm::translate(_model, glm::vec3(0.4f,  -0.4f, -0.4f));
+
+	_projection = glm::perspective(glm::radians(30.0f), (float)WIDTH / (float) HEIGHT, 0.1f, 100.0f);
+	_model = glm::translate(_model, glm::vec3(0.0f,  -0.6f, -3.5f));
+	_model = glm::rotate(_model, glm::radians(50.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    //_model = glm::rotate(_model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	
+	_model = glm::scale(_model, glm::vec3(0.1));
+
+	_view       = glm::lookAt(
+		glm::vec3(-1.0f, 2.0f,  3.0f), // Camera is at (4,3,-3), in World Space
+		glm::vec3(0.0f, 0.0f, -1.0f), // and looks at the origin
+		glm::vec3(0.0f, 1.0f,  1.0f)  // Head is up (set to 0,-1,0 to look upside-down)
+   );
+
+   bool res = loadOBJ("BombermanModels/bomberman.obj", _vertices, _uvbuffer, normals); 
 }
 
 Player::~Player()
@@ -11,158 +34,134 @@ Player::~Player()
 	glDeleteBuffers(1, &pVAO);
 	glDeleteBuffers(1, &pVBO);
 	glDeleteBuffers(1, &pEBO);
-	glDeleteProgram(programID);
+	glDeleteProgram(texture_programID);
 }
 
 void Player::init()
 {
-	programID = LoadShaders("TransformationFragmentShader.hlsl", "TextureFragmentShader.hlsl");
+		glUseProgram(texture_programID);
+	
+		_view = getViewMatrix();
 
-	GLfloat vertices[] = {
-        //bottom
-        -0.89f, 0.85f, -0.05f,  0.0f, 0.0f, //0
-        -0.85f, 0.85f, -0.05f,  1.0f, 0.0f, //1
-        -0.89, 0.81f, -0.05f,  0.0f, 1.0f,  //2
-        -0.89, 0.81f, -0.05f,  0.0f, 1.0f,  //2
-        -0.85, 0.81f, -0.05f,  1.0f, 1.0f,  //3
-        -0.85f, 0.85f, -0.05f, 1.0f, 0.0f, //1
-        
-        //top
-        -0.89f, 0.85f, 0.05f,  0.0f, 0.0f, //4
-        -0.85f, 0.85f, 0.05f,  1.0f, 0.0f, //5
-        -0.89, 0.81f, 0.05f,  0.0f, 1.0f,  //6
-        -0.89, 0.81f, 0.05f,  0.0f, 1.0f,  //6
-        -0.85, 0.81f, 0.05f,  1.0f, 1.0f,  //7
-        -0.85f, 0.85f, 0.05f,  1.0f, 0.0f, //5
-        
-        //front
-        -0.89f, 0.85f, -0.05f,  0.0f, 0.0f, //0
-        -0.85f, 0.85f, -0.05f,  1.0f, 0.0f, //1
-        -0.89f, 0.85f, 0.05f,  0.0f, 1.0f, //4
-        -0.89f, 0.85f, 0.05f,  0.0f, 1.0f, //4
-        -0.85f, 0.85f, 0.05f,  1.0f, 1.0f, //5
-        -0.85f, 0.85f, -0.05f,  1.0f, 0.0f, //1
-        
-        //back
-        -0.89, 0.81f, -0.05f,  0.0f, 0.0f,  //2
-        -0.85, 0.81f, -0.05f,  1.0f, 0.0f,  //3
-        -0.89, 0.81f, 0.05f,  0.0f, 1.0f,  //6
-        -0.89, 0.81f, 0.05f,  0.0f, 1.0f,  //6
-        -0.85, 0.81f, 0.05f,  1.0f, 1.0f,  //7
-        -0.85, 0.81f, -0.05f,  1.0f, 0.0f,  //3
-        
-        //side right
-        -0.85f, 0.85f, -0.05f,  0.0f, 0.0f, //1
-        -0.85, 0.81f, -0.05f,  1.0f, 0.0f,  //3
-        -0.85f, 0.85f, 0.05f,  0.0f, 1.0f, //5
-        -0.85f, 0.85f, 0.05f,  0.0f, 1.0f, //5
-        -0.85, 0.81f, 0.05f,  1.0f, 1.0f,  //7
-        -0.85, 0.81f, -0.05f,  1.0f, 0.0f,  //3
-        
-        //side left
-        -0.89f, 0.85f, -0.05f,  0.0f, 0.0f, //0
-        -0.89, 0.81f, -0.05f,  1.0f, 0.0f,  //2
-        -0.89f, 0.85f, 0.05f,  0.0f, 1.0f, //4
-        -0.89f, 0.85f, 0.05f,  0.0f, 1.0f, //4
-        -0.89, 0.81f, 0.05f,  1.0f, 1.0f,  //6
-        -0.89, 0.81f, -0.05f,  1.0f, 0.0f,  //2
-        
-	};
+		glm::mat4 ProjectionMatrix = _projection;
+		glm::mat4 ViewMatrix = _view;
+		glm::mat4 ModelMatrix = _model;
 
-	/*unsigned int indices[] = {
-		0, 1, 2,
-		1, 2, 3
-	};*/
+		glUniformMatrix4fv(glGetUniformLocation(texture_programID, "transform"), 1, GL_FALSE, &_projection[0][0]);
+		std::cout << "Player draw" << std::endl;
 
-	glGenVertexArrays(1, &pVAO);
-	//glGenBuffers(1, &pEBO);
-	glGenBuffers(1, &pVBO);
-	glBindVertexArray(pVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, pVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pEBO);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-	// texture coord attribute
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
+		if(y == 1 && x != 1)
+		{
+			_model = glm::rotate(_model, glm::radians(90.0f * (x - y)), glm::vec3(0.0f, 1.0f, 0.0f));
+			x = y;
+		}
+		else if(y == 2 && x != 2)
+		{
+			_model = glm::rotate(_model, glm::radians(90.0f * (x - y)), glm::vec3(0.0f, 1.0f, 0.0f));
+			x = y;
+		}
+		else if(y == 3 && x != 3)
+		{
+			_model = glm::rotate(_model, glm::radians(90.0f * (x - y)), glm::vec3(0.0f, 1.0f, 0.0f));
+			x = y;
+		}
+		else if(y == 4 && x != 4)
+		{
+			_model = glm::rotate(_model, glm::radians(90.0f * (x - y)), glm::vec3(0.0f, 1.0f, 0.0f));
+			x = y;
+		}
+		_modelLoc = glGetUniformLocation(texture_programID, "model");
+		glUniformMatrix4fv(_modelLoc, 1, GL_FALSE, glm::value_ptr(_model));
+		glUniformMatrix4fv(glGetUniformLocation(texture_programID, "view"), 1, GL_FALSE, &_view[0][0]);
 
-	Texture pTexture("bombermanImage.png", &pTextureId);
+		glGenBuffers(1, &pVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, pVAO);
+		glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(glm::vec3), &_vertices[0], GL_STATIC_DRAW);
 
-	/*glm::mat4 projection;
-	projection = glm::perspective(glm::radians(30.0f), (float)1027 / (float)768, 0.1f, 100.0f);
-	glUniformMatrix4fv(glGetUniformLocation(programID, "projection"), 1, GL_FALSE, &projection[0][0]);*/
+		GLuint pUVO;
+		glGenBuffers(1, &pUVO);
+		glBindBuffer(GL_ARRAY_BUFFER, pUVO);
+		glBufferData(GL_ARRAY_BUFFER, _uvbuffer.size() * sizeof(glm::vec2), &_uvbuffer[0], GL_STATIC_DRAW);
+		
+		//pTextureId = Texture;
+
+		glBindTexture(GL_TEXTURE_2D, pTextureId);
+
+		glEnableVertexAttribArray(1);
+		glBindBuffer(GL_ARRAY_BUFFER, pUVO);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0 * sizeof(float), (void*)(0 * sizeof(float)));
+		glEnableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, pVAO);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0 * sizeof(float), (void*)0 );
+
+		glDrawArrays(GL_TRIANGLES, 0, _vertices.size() );
+
+		glDeleteBuffers(1, &pVAO);
+		glDeleteBuffers(1, &pVBO);
+		glDeleteBuffers(1, &pEBO);
+
 }
 
 void Player::moveUp()
 {
-	if (yPos < 2.075f)
-		yPos += 0.025f;
+	yPos += 0.025f;
 }
 
 void Player::moveDown()
-{	
-	if (yPos > 0.175f)
-		yPos -= 0.025f;
+{
+	yPos -= 0.025f;
 }
 
 void Player::moveLeft()
 {
-	if (xPos >= -1.15f)
-		xPos -= 0.025f;
+	xPos -= 0.025f;
 }
 void Player::moveRight()
 {
-	if (xPos < 0.77f)
-    {
-		xPos += 0.025f;
-        //std::cout << "pos x "<<xPos << std::endl;
-    }
+	xPos += 0.025f;
 }
 
-void Player::transform()
+void Player::player_callback(GLFWwindow* window)
 {
-	// create transformations
-	glm::mat4 transform;
-	transform = glm::translate(transform, glm::vec3(xPos, yPos, -1.0f));
-	float angle = 20.0f * 0;
-	transform = glm::rotate(transform, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-
-	//glm::mat4 view;
-	glm::mat4 projection;
-	projection = glm::perspective(glm::radians(35.0f), (float)1024 / (float)768, 0.1f, 100.0f);
-	glUniformMatrix4fv(glGetUniformLocation(programID, "projection"), 1, GL_FALSE, &projection[0][0]);
-
-	// get matrix's uniform location and set matrix
-	glUseProgram(programID);
-	unsigned int transformLoc = glGetUniformLocation(programID, "model");
-	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+	
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+    {
+    	glm::vec3 bills(0.0,0.0,0.02);
+		_model = glm::translate(_model, bills);
+		if (x != 1)
+			y = 1;
+        std::cout << "a\n";
+    }
+    else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+    {
+    	glm::vec3 bills(0.0,0.0,0.02);
+		_model = glm::translate(_model, bills);
+		if (x != 3)
+		y = 3;
+        std::cout << "dt\n";
+    }
+    else if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+    {
+    	glm::vec3 bills(0.0,0.0,0.02);
+		_model = glm::translate(_model, bills);
+		if (x != 2)
+		y = 2;
+        std::cout << "a\n";
+    }
+    else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+    {
+    	glm::vec3 bills(0.0,0.0,0.02);
+		_model = glm::translate(_model, bills);
+		if (x != 4)
+		y = 4;
+        std::cout << "dt\n";
+    }
+ //   switch 
+    
 }
 
 void Player::draw()
 {
-	glUseProgram(programID);
-	//camera.cameraFunction(programID);
-	//draw player
-	glBindTexture(GL_TEXTURE_2D, pTextureId);
-	glBindVertexArray(pVAO);
-	//glDrawElements(GL_POINTS, 6, GL_UNSIGNED_INT, 0);
-    //glDrawArrays(GL_POINTS, 0, 14);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
-}
-
-GLfloat Player::getYPos()
-{
-	return yPos;
-}
-
-GLfloat Player::getXPos()
-{
-	return xPos;
-}
-
-GLuint Player::getProgramId()
-{
-	return programID;
+	glUseProgram(texture_programID);
+	glDrawArrays(GL_TRIANGLES, 0, _vertices.size() );
 }
