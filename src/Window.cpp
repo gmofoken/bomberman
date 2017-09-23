@@ -27,8 +27,28 @@ Window::~Window()
 //Runs Game         :Cradebe
 void Window::runGame()
 {
+    int     win;
     // _sound->playMusicForvever(MUSIC_BEAR);
-    initiateSystems();
+    std::cout << "PLEASE SELECT WINDOW MODE: [1] Windowed OR [0] FullScreen" << std::endl;
+    std::cin >> win;
+
+    while (win != 1 || win != 0){
+        if (win == 1 || win == 0)
+            break;
+        else
+        {
+            std::cout << win;
+            std::cout << " IS NOT A VALID OPTION" << std::endl;
+            std::cout << "PLEASE SELECT WINDOW MODE: [1] Windowed OR [0] FullScreen" << std::endl;
+            std::cin >> win;
+        }
+    }
+    
+    if (win == 1)
+        initiateSystems2();
+    else
+        initiateSystems();
+    //initiateSystems();
 }
 
 //Initiates Screen  :Cradebe
