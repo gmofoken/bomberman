@@ -12,7 +12,9 @@
 #include <fstream>
 #include <stdlib.h>
 #include <iostream>
+#include "sys/stat.h"
 #include "shader.hpp"
+#include "sys/types.h"
 #include "Texture.hpp"
 #include "glm/glm.hpp"
 #include "SDL_mixer.h"

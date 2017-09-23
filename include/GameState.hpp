@@ -8,6 +8,7 @@ class GameState {
     public:
         GameState();
         ~GameState();
+        void cleanUpSave();
         int loadPlayerState(Player *p);
         int savePlayerState(Player &p);
         void operator=(GameState *rhs);

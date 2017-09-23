@@ -9,6 +9,12 @@ GameState::~GameState() {
 void GameState::operator=(GameState *rhs){
 }
 
+void GameState::cleanUpSave()
+{
+    std::ofstream ofs("gamestate/player.dat", std::ofstream::trunc);
+    ofs.close();
+}
+
 bool GameState::isEmpty(std::ifstream &ifs)
 {
     return (ifs.peek() == std::ifstream::traits_type::eof());
@@ -16,6 +22,7 @@ bool GameState::isEmpty(std::ifstream &ifs)
 
 int GameState::savePlayerState(Player &p)
 {
+    mkdir("gamestate", 0777);
     std::ofstream ofs("gamestate/player.dat");
     if (ofs.is_open())
     {
