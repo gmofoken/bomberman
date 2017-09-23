@@ -5,7 +5,7 @@
 #include "camera.hpp"
 #include "loader.hpp"
 
-#define PLAYER 0.03f
+#define PLAYER 0.1f
 #define WALL 0.1f
 
 class Player
